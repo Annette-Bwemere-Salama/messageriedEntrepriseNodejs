@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose {Error} from 'mongoose';
 import express, { Express, Request, Response} from 'express';
 import bscrypt from 'bcryptjs';
 import session from 'express-session';
@@ -7,6 +7,15 @@ import  dotenv from 'dotenv';
 
 
 dotenv.config();
+
+mongoose.connect("mongodb+srv://jimbob:process.env.PASSWORD@cluster0-pme76.mongodb.net/test?retryWrites=true&w=majority",{
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useUnifielTopology: true
+    }, (err: Error)=>{
+        if (err) throw err;
+                    
+    });
 
 
 const app: Express = express();
