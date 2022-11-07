@@ -7,14 +7,13 @@ import Login from "./Pages/Login"
 import Profile from "./Pages/Profile"
 function App() {
   return (
-   <BrowserRouter>
-   <NavBar/>
+<BrowserRouter>
+<NavBar/>
     <Routes>
-      <Route path="/" element={<Login/>} />
-      <Route path="/home" element={<HomePages/>}/>
-      <Route path="/profile" element={<Profile/>}/>
+      <Route path="/" element={<HomePages/>} />
       <Route path="/admin" element={<AdminPage/>}/>
-
+      <Route path="/login" element={<Login/>}/>
+      <Route path="/profile" element={<Profile/>}/>
     </Routes>
    </BrowserRouter>
   )
