@@ -3,15 +3,15 @@ import express, { Express, Request, Response} from 'express';
 import bscrypt from 'bcryptjs';
 import session from 'express-session';
 import cookieParser from 'cookie-parser'; 
+import passportLocal from 'passport-local';
 import cors from 'cors' ;
 import passport from 'passport';
 import User  from './User';
 import  dotenv from 'dotenv';
 import {UserInterface} from "./interfaces/Userinterfaces";
-// import {LocalStrategy} from 'passport-local';
-// import LocalStrategy from "passport-local";
 
- const LocalStrategy = passport-local().Strategy;
+
+ const LocalStrategy = passportLocal.Strategy;
  dotenv.config();
 
 
@@ -48,12 +48,13 @@ app.use(express.json())
 app.use(cookieParser())
     .use(passport.initialize())
     .use(passport.session());
+
 //passport
-passport.use(new  LocalStrategy((username: any, paassword: string, done: (arg0: null, arg1: boolean) => void)=>{
-  User.findOne({ username: username}, (err: any, user : any)=>{
+passport.use(new  LocalStrategy((username, password, done)=>{
+  User.findOne({ username: username}, (err : any, user : any)=>{
     if (err) throw err;
     if (!user) return done(null,false);
-    bscrypt.compare(paassword, user.paassword, (err, result)=>{
+    bscrypt.compare(password, user.paassword, (err, result)=>{
       if(err) throw err;
       if(result === true){
         return done (null, user);
@@ -79,8 +80,7 @@ passport.deserializeUser((id: string, cb)=>{
     };
     cb(err, userInformation);
 });
-})
-
+});
 
 
 
@@ -119,10 +119,9 @@ app.post("/login", passport.authenticate("local", (req, res) => {
 app.get("/user", (req,res)=>{
   res.send(req.user);
 })
+
 app.listen(4000, () => {
     console.log(`[server]: Server is runnning at https : anny  localhost: ${port}`);
 })
 
-function local() {
-  throw new Error('Function not implemented.');
-}
+
