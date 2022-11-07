@@ -3,12 +3,16 @@ import express, { Express, Request, Response} from 'express';
 import bscrypt from 'bcryptjs';
 import session from 'express-session';
 import cookieParser from 'cookie-parser'; 
+import passportLocal from 'passport-local';
 import cors from 'cors' ;
 import passport from 'passport';
 import User  from './User';
 import  dotenv from 'dotenv';
+import {UserInterface} from "./interfaces/Userinterfaces";
 
-dotenv.config();
+
+ const LocalStrategy = passportLocal.Strategy;
+ dotenv.config();
 
 
 const  URI = process.env.MONGODB_URI;
@@ -18,8 +22,6 @@ console.log(URI)
  mongoose.connect(URI!,{
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    // useCreateIndex: true,
-    // useFindAndModify: false,
   } as ConnectOptions, (err: Error)=>{
        if (err){
         console.log(err)
@@ -28,49 +30,98 @@ console.log(URI)
         console.log("Connection fait avec succes chez mongodbdatabase  ");
         
     }) ;
+
    
-// const { MongoClient, ServerApiVersion } = require('mongodb');
-// const uri = "mongodb+srv://<username>:<password>@cluster0.e6najmy.mongodb.net/?retryWrites=true&w=majority";
-// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-// client.connect(err => {
-//   const collection = client.db("test").collection("devices");
-//   // perform actions on the collection object
-//   client.close();
-// });
+
+  // midlewere
+const app: Express = express();
+app.use(express.json())
+    .use(cors({origin: "http://localhost:3000", credentials: true}))
+      .use(
+    session({
+        secret: "secretcode",
+        resave: true,
+        saveUninitialized: true,
+    })
+);
+
+app.use(cookieParser())
+    .use(passport.initialize())
+    .use(passport.session());
+
+//passport
+passport.use(new  LocalStrategy((username, password, done)=>{
+  User.findOne({ username: username}, (err : any, user : any)=>{
+    if (err) throw err;
+    if (!user) return done(null,false);
+    bscrypt.compare(password, user.paassword, (err, result)=>{
+      if(err) throw err;
+      if(result === true){
+        return done (null, user);
+      }else {
+        return done(null, false);
+      }
+    });
+  });
+})
+);
+
+
+passport.serializeUser((user : any, cb)=>{
+  cb(null,user.id);
+});
+
+
+passport.deserializeUser((id: string, cb)=>{
+  User.findOne({_id: id}, (err: any, user : any) =>{
+    const userInformation = {
+      username : user.username,
+      isAdmin: user.isAdmin
+    };
+    cb(err, userInformation);
+});
+});
 
 
 
+const port = process.env.PORT
+
+app.post('/register', async (req: Request, res: Response) => {
+
+   const {username, password} = req?.body;
+   if (username || !password || typeof username !== "string" || typeof password !== "string") {
+      res.send("N'oublies pas les conténus");
+      return;
+   }
+   User.findOne({ username}, async (err: Error, doc? : UserInterface) =>{
+    if (err)throw err;
+    if (doc) res.send("User exists déjà veuillez changer")
+    if (!doc) {
+
+      const hashedPassword = await bscrypt.hash(password, 10);
+      const newUser = new User({
+          username,
+          password: hashedPassword
+      });
+   await newUser.save();
+      res.send("Fait avec succes connection utilisateur Annette")
+       }
+  })
+});
 
 
 
-// const app: Express = express();
-// app.use(express.json())
-//     .use(cors({origin: "http://localhost:3000", credentials: true}))
-//       .use(
-//     session({
-//         secret: "secretcode",
-//         resave: true,
-//         saveUninitialized: true,
-//     })
-// );
-
-// app.use(cookieParser())
-//     .use(passport.initialize())
-//     .use(passport.session());
-// const port = process.env.PORT
+app.post("/login", passport.authenticate("local", (req, res) => {
+  res.send("Autentifier avec succes")
+}));
 
 
-// app.post('/register', async (req: Request, res: Response) => {
-//     // res.send('Salut tous les mondes')
-//     const hashedPassword = await bscrypt.hash(req.body.passport, 10);
-//     const newUser = new User({
-//         username: req.body.username,
-//         password: hashedPassword
-//     });
-//     await newUser.save();
-//     res.send("Fait avec succes connection utilisateur Annette")
-// });
+app.get("/user", (req,res)=>{
+  res.send(req.user);
+})
 
-// app.listen(port, () => {
-//     console.log(`[server]: Server is runnning at https : localhost: ${port}`);
-// })
+app.listen(4000, () => {
+    console.log(`[server]: Server is runnning at https : anny  localhost: ${port}`);
+})
+
+
