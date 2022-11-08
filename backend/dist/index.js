@@ -61,12 +61,12 @@ mongoose_1.default.connect(URI, {
         console.log(err);
         process.exit(1);
     }
-    console.log("Connection fait avec succes chez mongodbdatabase  ");
+    console.log("Connection fait avec succes chez mongodbdatabase");
 });
 // midlewere
 var app = (0, express_1.default)();
 app.use(express_1.default.json())
-    .use((0, cors_1.default)({ origin: "http://localhost:3000", credentials: true }))
+    .use((0, cors_1.default)({ origin: "http://localhost:5173", credentials: true }))
     .use((0, express_session_1.default)({
     secret: "secretcode",
     resave: true,
@@ -150,7 +150,7 @@ app.post("/login", passport_1.default.authenticate("local", function (req, res) 
 app.get("/user", function (req, res) {
     res.send(req.user);
 });
-app.listen(4000, function () {
+app.listen(port, function () {
     console.log("[server]: Server is runnning at https : anny  localhost: ".concat(port));
 });
 //# sourceMappingURL=index.js.map

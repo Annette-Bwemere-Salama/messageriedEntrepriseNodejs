@@ -27,16 +27,15 @@ console.log(URI)
         console.log(err)
         process.exit(1)
        }
-        console.log("Connection fait avec succes chez mongodbdatabase  ");
+        console.log("Connection fait avec succes chez mongodbdatabase");
         
     }) ;
 
    
-
   // midlewere
 const app: Express = express();
 app.use(express.json())
-    .use(cors({origin: "http://localhost:3000", credentials: true}))
+    .use(cors({origin: "http://localhost:5173", credentials: true}))
       .use(
     session({
         secret: "secretcode",
@@ -120,7 +119,7 @@ app.get("/user", (req,res)=>{
   res.send(req.user);
 })
 
-app.listen(4000, () => {
+app.listen(port, () => {
     console.log(`[server]: Server is runnning at https : anny  localhost: ${port}`);
 })
 
