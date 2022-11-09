@@ -27,11 +27,12 @@ console.log(URI)
         console.log(err)
         process.exit(1)
        }
-        console.log("Connection fait avec succes chez mongodbdatabase");
+        console.log("Connection fait avec succes chez mongodbdatabase ");
         
     }) ;
 
    
+
   // midlewere
 const app: Express = express();
 app.use(express.json())
@@ -86,15 +87,15 @@ passport.deserializeUser((id: string, cb)=>{
 const port = process.env.PORT
 
 app.post('/register', async (req: Request, res: Response) => {
-
    const {username, password} = req?.body;
    if (username || !password || typeof username !== "string" || typeof password !== "string") {
       res.send("N'oublies pas les conténus");
       return;
    }
-   User.findOne({ username}, async (err: Error, doc? : UserInterface) =>{
-    if (err)throw err;
-    if (doc) res.send("User exists déjà veuillez changer")
+   User.findOne({ username}, async (err: Error, doc : UserInterface) =>{
+    if (err){console.log(err);
+    }
+    if (doc) res.send("User exists déjà veuillez")
     if (!doc) {
 
       const hashedPassword = await bscrypt.hash(password, 10);
@@ -109,7 +110,6 @@ app.post('/register', async (req: Request, res: Response) => {
 });
 
 
-
 app.post("/login", passport.authenticate("local", (req, res) => {
   res.send("Autentifier avec succes")
 }));
@@ -119,7 +119,7 @@ app.get("/user", (req,res)=>{
   res.send(req.user);
 })
 
-app.listen(port, () => {
+app.listen(4000, () => {
     console.log(`[server]: Server is runnning at https : anny  localhost: ${port}`);
 })
 

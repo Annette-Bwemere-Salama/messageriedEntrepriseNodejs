@@ -11,8 +11,12 @@
   width: 100vw;
   height: 100px;
   background: black;
-  color: whitesmoke;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+}
+
+.NavContainer a {
+  color: aliceblue;
+  text-decoration: none ;
 }

@@ -61,7 +61,7 @@ mongoose_1.default.connect(URI, {
         console.log(err);
         process.exit(1);
     }
-    console.log("Connection fait avec succes chez mongodbdatabase");
+    console.log("Connection fait avec succes chez mongodbdatabase ");
 });
 // midlewere
 var app = (0, express_1.default)();
@@ -120,10 +120,11 @@ app.post('/register', function (req, res) { return __awaiter(void 0, void 0, voi
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (err)
-                            throw err;
+                        if (err) {
+                            console.log(err);
+                        }
                         if (doc)
-                            res.send("User exists déjà veuillez changer");
+                            res.send("User exists déjà veuillez");
                         if (!!doc) return [3 /*break*/, 3];
                         return [4 /*yield*/, bcryptjs_1.default.hash(password, 10)];
                     case 1:
@@ -150,7 +151,7 @@ app.post("/login", passport_1.default.authenticate("local", function (req, res) 
 app.get("/user", function (req, res) {
     res.send(req.user);
 });
-app.listen(port, function () {
+app.listen(4000, function () {
     console.log("[server]: Server is runnning at https : anny  localhost: ".concat(port));
 });
 //# sourceMappingURL=index.js.map
