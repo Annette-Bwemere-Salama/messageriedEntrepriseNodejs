@@ -1,5 +1,5 @@
 import mongoose , {Error, ConnectOptions} from 'mongoose';
-import express, { Express, Request, Response} from 'express';
+import express, { Express, NextFunction, Request, Response} from 'express';
 import bscrypt from 'bcryptjs';
 import session from 'express-session';
 import cookieParser from 'cookie-parser'; 
@@ -8,8 +8,8 @@ import cors from 'cors' ;
 import passport from 'passport';
 import User  from './User';
 import  dotenv from 'dotenv';
-import {UserInterface} from "./interfaces/Userinterfaces";
-
+import {UserInterface, DatabaseUserInterface} from "./interfaces/UserInterface";
+import {getRegister} from "../src/routes/register"
 
  const LocalStrategy = passportLocal.Strategy;
  dotenv.config();
@@ -32,7 +32,6 @@ console.log(URI)
     }) ;
 
    
-
   // midlewere
 const app: Express = express();
 app.use(express.json())
@@ -50,11 +49,11 @@ app.use(cookieParser())
     .use(passport.session());
 
 //passport
-passport.use(new  LocalStrategy((username, password, done)=>{
-  User.findOne({ username: username}, (err : any, user : any)=>{
+passport.use(new  LocalStrategy((username: string, password: string, done)=>{
+  User.findOne({ username: username}, (err : any, user : DatabaseUserInterface)=>{
     if (err) throw err;
     if (!user) return done(null,false);
-    bscrypt.compare(password, user.paassword, (err, result)=>{
+    bscrypt.compare(password, user.password, (err, result: boolean)=>{
       if(err) throw err;
       if(result === true){
         return done (null, user);
@@ -67,60 +66,91 @@ passport.use(new  LocalStrategy((username, password, done)=>{
 );
 
 
-passport.serializeUser((user : any, cb)=>{
-  cb(null,user.id);
+passport.serializeUser((user : DatabaseUserInterface, cb)=>{
+  cb(null,user._id);
 });
 
 
 passport.deserializeUser((id: string, cb)=>{
-  User.findOne({_id: id}, (err: any, user : any) =>{
-    const userInformation = {
-      username : user.username,
-      isAdmin: user.isAdmin
+  User.findOne({_id: id}, (err: any, user : DatabaseUserInterface) =>{
+    const userInformation : UserInterface = {
+     username : user.username,
+      isAdmin: user.isAdmin,
+      id: user._id
     };
     cb(err, userInformation);
 });
 });
 
 
-
 const port = process.env.PORT
+// app.post('/register', registerController.register());
 
-app.post('/register', async (req: Request, res: Response) => {
-   const {username, password} = req?.body;
-   if (username || !password || typeof username !== "string" || typeof password !== "string") {
-      res.send("N'oublies pas les conténus");
-      return;
-   }
-   User.findOne({ username}, async (err: Error, doc : UserInterface) =>{
-    if (err){console.log(err);
+app.post('/register',getRegister)gi
+
+
+
+const isAdministratorMiddleware = (req: Request, res: Response, next: NextFunction) =>{
+  const {user} : any = req;
+  if (user) {
+    User.findOne({ username: user.username}, (err: Error, doc:  DatabaseUserInterface) =>{
+      if (err) throw err;
+      if (doc?.isAdmin){
+        next ()
+      }
+      else{
+        res.send("Désolé, seuls les administrateurs peuvent effectuer cette opération.")
+      }
+    })
     }
-    if (doc) res.send("User exists déjà veuillez")
-    if (!doc) {
+    else{
+      res.send("Désolé, vous n'êtes pas connecté.")
+    }
+  }
 
-      const hashedPassword = await bscrypt.hash(password, 10);
-      const newUser = new User({
-          username,
-          password: hashedPassword
-      });
-   await newUser.save();
-      res.send("Fait avec succes connection utilisateur Annette")
-       }
-  })
+app.post("/login", passport.authenticate("local"), (_, res) => {
+  res.send("success")
 });
-
-
-app.post("/login", passport.authenticate("local", (req, res) => {
-  res.send("Autentifier avec succes")
-}));
-
 
 app.get("/user", (req,res)=>{
   res.send(req.user);
-})
+});
 
-app.listen(4000, () => {
+app.get("/logout", (req,res, next)=>{
+  req.logout(function(err){
+    if (err) {return next (err);}
+    res.redirect('/login')
+  });
+  res.send("success")
+});
+
+app.post("/deleteuser",isAdministratorMiddleware, async (req, res) =>{
+  const {id} = req.body;
+  await User.findByIdAndDelete(id, (err: Error) =>{
+    if (err)throw err;
+  });
+  res.send("sucess")
+});
+
+
+app.get("/getallusers", isAdministratorMiddleware, async (_, res)=>{
+  await  User.find({}, (err : Error,  data : DatabaseUserInterface[])=>{
+    if(err) throw err;
+    const filterdUsers: UserInterface[] = [];
+    data.forEach((item : DatabaseUserInterface) =>{
+      const userInformation = {
+        id: item._id,
+        username: item.username,
+        isAdmin: item.isAdmin
+      }
+      filterdUsers.push(userInformation);
+  });
+  res.send(filterdUsers);
+})
+});
+
+// app.use(errorControler.get404);
+
+app.listen(4001, () => {
     console.log(`[server]: Server is runnning at https : anny  localhost: ${port}`);
 })
-
-

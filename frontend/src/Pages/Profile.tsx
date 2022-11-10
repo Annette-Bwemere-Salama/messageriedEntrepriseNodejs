@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { myContext } from './Context'
 
 export default function Profile() {
+  const ctx = useContext(myContext)
   return (
-    <div>Profile</div>
+    <div>
+      <h1> Actuel Username : {ctx.username}
+      </h1>
+    </div>
   )
 }

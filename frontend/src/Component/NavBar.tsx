@@ -1,26 +1,38 @@
-import React,{useContext} from 'react'
-import {Link} from 'react-router-dom'
-import {myContext} from "../Pages/Context"
+import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
+import { myContext } from "../Pages/Context"
+import Axios, { AxiosResponse } from 'axios'
+
 export default function NavBar() {
   const ctx = useContext(myContext);
+
+  const logout = () => {
+    Axios.get("http://localhost:4000/logout", {
+      withCredentials: true
+    }).then((res: AxiosResponse) => {
+      if (res.data === "success") {
+        window.location.href = "/";
+      }
+    })
+  }
   return (
     <div className='NavContainer'>
       {
         ctx ? (
           <>
-          <Link to="/logout">Logout</Link>
-          <Link to="/admin">Admin</Link>
-          <Link to="profile">Profile</Link>
+            <Link onClick={logout} to="/logout">Logout</Link>
+            {ctx.isAdmin ? (<Link to="/admin">Admin</Link>) : null}
+            <Link to="profile">Profile</Link>
           </>
-        ) : ( 
+        ) : (
           <>
-          <Link to="/">Home</Link>
-          <Link to="/login">login</Link>
-          <Link to="/home">Home</Link>
-          <Link to="/register">Register</Link>
+            <Link to="/login">login</Link>
+            <Link to="/register">Register</Link>
           </>
         )
       }
-       </div>
+      <Link to="/">Home</Link>
+      {/* <hr /> */}
+    </div>
   )
 }

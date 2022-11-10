@@ -1,13 +1,10 @@
-
-
 export interface UserInterface {
-    id: string;
-    username: string;
-    isAdmin: boolean;
-  }
+    username: string,
+    isAdmin: boolean,
+    id: string
+}
 
-
-  export interface DatabaseUserInterface {
+export interface DatabaseUserInterface {
     username: string;
     password: string;
     isAdmin: boolean;

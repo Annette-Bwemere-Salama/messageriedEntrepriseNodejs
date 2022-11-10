@@ -39,80 +39,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var mongoose_1 = __importDefault(require("mongoose"));
-var express_1 = __importDefault(require("express"));
 var bcryptjs_1 = __importDefault(require("bcryptjs"));
-var express_session_1 = __importDefault(require("express-session"));
-var cookie_parser_1 = __importDefault(require("cookie-parser"));
-var passport_local_1 = __importDefault(require("passport-local"));
-var cors_1 = __importDefault(require("cors"));
-var passport_1 = __importDefault(require("passport"));
-var User_1 = __importDefault(require("./User"));
-var dotenv_1 = __importDefault(require("dotenv"));
-var LocalStrategy = passport_local_1.default.Strategy;
-dotenv_1.default.config();
-var URI = process.env.MONGODB_URI;
-console.log(URI);
-mongoose_1.default.connect(URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}, function (err) {
-    if (err) {
-        console.log(err);
-        process.exit(1);
-    }
-    console.log("Connection fait avec succes chez mongodbdatabase");
-});
-// midlewere
-var app = (0, express_1.default)();
-app.use(express_1.default.json())
-    .use((0, cors_1.default)({ origin: "http://localhost:5173", credentials: true }))
-    .use((0, express_session_1.default)({
-    secret: "secretcode",
-    resave: true,
-    saveUninitialized: true,
-}));
-app.use((0, cookie_parser_1.default)())
-    .use(passport_1.default.initialize())
-    .use(passport_1.default.session());
-//passport
-passport_1.default.use(new LocalStrategy(function (username, password, done) {
-    User_1.default.findOne({ username: username }, function (err, user) {
-        if (err)
-            throw err;
-        if (!user)
-            return done(null, false);
-        bcryptjs_1.default.compare(password, user.paassword, function (err, result) {
-            if (err)
-                throw err;
-            if (result === true) {
-                return done(null, user);
-            }
-            else {
-                return done(null, false);
-            }
-        });
-    });
-}));
-passport_1.default.serializeUser(function (user, cb) {
-    cb(null, user.id);
-});
-passport_1.default.deserializeUser(function (id, cb) {
-    User_1.default.findOne({ _id: id }, function (err, user) {
-        var userInformation = {
-            username: user.username,
-            isAdmin: user.isAdmin
-        };
-        cb(err, userInformation);
-    });
-});
-var port = process.env.PORT;
-app.post('/register', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var User_1 = __importDefault(require("../User"));
+exports.register = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, username, password;
     return __generator(this, function (_b) {
         _a = req === null || req === void 0 ? void 0 : req.body, username = _a.username, password = _a.password;
+        console.log("username:" + username + "password:" + password);
         if (username || !password || typeof username !== "string" || typeof password !== "string") {
-            res.send("N'oublies pas les conténus");
+            res.send("Valeur incorrect");
             return [2 /*return*/];
         }
         User_1.default.findOne({ username: username }, function (err, doc) { return __awaiter(void 0, void 0, void 0, function () {
@@ -120,22 +55,24 @@ app.post('/register', function (req, res) { return __awaiter(void 0, void 0, voi
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (err)
-                            throw err;
+                        if (err) {
+                            console.log(err);
+                        }
                         if (doc)
-                            res.send("User exists déjà veuillez changer");
+                            res.send("User exists déjà veuillez");
                         if (!!doc) return [3 /*break*/, 3];
                         return [4 /*yield*/, bcryptjs_1.default.hash(password, 10)];
                     case 1:
                         hashedPassword = _a.sent();
                         newUser = new User_1.default({
                             username: username,
-                            password: hashedPassword
+                            password: hashedPassword,
+                            // isAdmin: true
                         });
                         return [4 /*yield*/, newUser.save()];
                     case 2:
                         _a.sent();
-                        res.send("Fait avec succes connection utilisateur Annette");
+                        res.send("success");
                         _a.label = 3;
                     case 3: return [2 /*return*/];
                 }
@@ -143,14 +80,4 @@ app.post('/register', function (req, res) { return __awaiter(void 0, void 0, voi
         }); });
         return [2 /*return*/];
     });
-}); });
-app.post("/login", passport_1.default.authenticate("local"), function (req, res) {
-    res.send("Autentifier avec succes");
-});
-app.get("/user", function (req, res) {
-    res.send(req.user);
-});
-app.listen(port, function () {
-    console.log("[server]: Server is runnning at https : anny  localhost: ".concat(port));
-});
-//# sourceMappingURL=index.js.map
+}); };
