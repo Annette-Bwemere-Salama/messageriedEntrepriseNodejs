@@ -49,6 +49,8 @@ var cors_1 = __importDefault(require("cors"));
 var passport_1 = __importDefault(require("passport"));
 var User_1 = __importDefault(require("./User"));
 var dotenv_1 = __importDefault(require("dotenv"));
+// import registerController from "../routes/register";
+// import errorControler from "../controllers/errers"
 var LocalStrategy = passport_local_1.default.Strategy;
 dotenv_1.default.config();
 var URI = process.env.MONGODB_URI;
@@ -61,12 +63,12 @@ mongoose_1.default.connect(URI, {
         console.log(err);
         process.exit(1);
     }
-    console.log("Connection fait avec succes chez mongodbdatabase  ");
+    console.log("Connection fait avec succes chez mongodbdatabase ");
 });
 // midlewere
 var app = (0, express_1.default)();
 app.use(express_1.default.json())
-    .use((0, cors_1.default)({ origin: "http://localhost:3000", credentials: true }))
+    .use((0, cors_1.default)({ origin: "http://localhost:5173", credentials: true }))
     .use((0, express_session_1.default)({
     secret: "secretcode",
     resave: true,
@@ -82,7 +84,7 @@ passport_1.default.use(new LocalStrategy(function (username, password, done) {
             throw err;
         if (!user)
             return done(null, false);
-        bcryptjs_1.default.compare(password, user.paassword, function (err, result) {
+        bcryptjs_1.default.compare(password, user.password, function (err, result) {
             if (err)
                 throw err;
             if (result === true) {
@@ -95,24 +97,27 @@ passport_1.default.use(new LocalStrategy(function (username, password, done) {
     });
 }));
 passport_1.default.serializeUser(function (user, cb) {
-    cb(null, user.id);
+    cb(null, user._id);
 });
 passport_1.default.deserializeUser(function (id, cb) {
     User_1.default.findOne({ _id: id }, function (err, user) {
         var userInformation = {
             username: user.username,
-            isAdmin: user.isAdmin
+            isAdmin: user.isAdmin,
+            id: user._id
         };
         cb(err, userInformation);
     });
 });
 var port = process.env.PORT;
-app.post('/register', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+// app.post('/register', registerController.register());
+app.post('register', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, username, password;
     return __generator(this, function (_b) {
         _a = req === null || req === void 0 ? void 0 : req.body, username = _a.username, password = _a.password;
+        console.log("username:" + username + "password:" + password);
         if (username || !password || typeof username !== "string" || typeof password !== "string") {
-            res.send("N'oublies pas les conténus");
+            res.send("Valeur incorrect");
             return [2 /*return*/];
         }
         User_1.default.findOne({ username: username }, function (err, doc) { return __awaiter(void 0, void 0, void 0, function () {
@@ -120,22 +125,24 @@ app.post('/register', function (req, res) { return __awaiter(void 0, void 0, voi
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (err)
-                            throw err;
+                        if (err) {
+                            console.log(err);
+                        }
                         if (doc)
-                            res.send("User exists déjà veuillez changer");
+                            res.send("User exists déjà veuillez");
                         if (!!doc) return [3 /*break*/, 3];
                         return [4 /*yield*/, bcryptjs_1.default.hash(password, 10)];
                     case 1:
                         hashedPassword = _a.sent();
                         newUser = new User_1.default({
                             username: username,
-                            password: hashedPassword
+                            password: hashedPassword,
+                            // isAdmin: true
                         });
                         return [4 /*yield*/, newUser.save()];
                     case 2:
                         _a.sent();
-                        res.send("Fait avec succes connection utilisateur Annette");
+                        res.send("success");
                         _a.label = 3;
                     case 3: return [2 /*return*/];
                 }
@@ -144,13 +151,80 @@ app.post('/register', function (req, res) { return __awaiter(void 0, void 0, voi
         return [2 /*return*/];
     });
 }); });
-app.post("/login", passport_1.default.authenticate("local", function (req, res) {
-    res.send("Autentifier avec succes");
-}));
+var isAdministratorMiddleware = function (req, res, next) {
+    var user = req.user;
+    if (user) {
+        User_1.default.findOne({ username: user.username }, function (err, doc) {
+            if (err)
+                throw err;
+            if (doc === null || doc === void 0 ? void 0 : doc.isAdmin) {
+                next();
+            }
+            else {
+                res.send("Désolé, seuls les administrateurs peuvent effectuer cette opération.");
+            }
+        });
+    }
+    else {
+        res.send("Désolé, vous n'êtes pas connecté.");
+    }
+};
+app.post("/login", passport_1.default.authenticate("local"), function (_, res) {
+    res.send("success");
+});
 app.get("/user", function (req, res) {
     res.send(req.user);
 });
+app.get("/logout", function (req, res, next) {
+    req.logout(function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/login');
+    });
+    res.send("success");
+});
+app.post("/deleteuser", isAdministratorMiddleware, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = req.body.id;
+                return [4 /*yield*/, User_1.default.findByIdAndDelete(id, function (err) {
+                        if (err)
+                            throw err;
+                    })];
+            case 1:
+                _a.sent();
+                res.send("sucess");
+                return [2 /*return*/];
+        }
+    });
+}); });
+app.get("/getallusers", isAdministratorMiddleware, function (_, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, User_1.default.find({}, function (err, data) {
+                    if (err)
+                        throw err;
+                    var filterdUsers = [];
+                    data.forEach(function (item) {
+                        var userInformation = {
+                            id: item._id,
+                            username: item.username,
+                            isAdmin: item.isAdmin
+                        };
+                        filterdUsers.push(userInformation);
+                    });
+                    res.send(filterdUsers);
+                })];
+            case 1:
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
+// app.use(errorControler.get404);
 app.listen(4000, function () {
     console.log("[server]: Server is runnning at https : anny  localhost: ".concat(port));
 });
-//# sourceMappingURL=index.js.map
