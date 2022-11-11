@@ -1,14 +1,26 @@
 /* @tailwind base;
 @tailwind components;
 @tailwind utilities; */
-/* 
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-} */
+}
+.NavContainer {
+  width: 100vw;
+  height: 100px;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
 
-/* 
+.NavContainer a {
+  color: aliceblue;
+  text-decoration: none;
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -27,14 +39,10 @@ form .input-field:first-child {
   margin-bottom: 1.5rem;
 }
 
-form 
-input[type="submit"]
-,
-btn {
+form input[type="submit"] {
   background: linear-gradient(to left, #4776e6, #8e54e9);
   color: white;
   border-radius: 4px;
   margin-top: 2rem;
-  padding: 0.3rem;
-  width: 11.5rem;
-} */
+  padding: 0.4rem;
+}

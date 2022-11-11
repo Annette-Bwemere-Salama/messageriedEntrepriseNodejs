@@ -8,14 +8,14 @@ export default function Register() {
 
     const Register = (e: any) => {
         e.preventDefault()
-        axios.post("http://localhost:4000/register", {
+        axios.post("http://localhost:4001/register", {
             username,
             password
         }, {
             withCredentials: true
         }).then((res: AxiosResponse) => {
             if (res.data === "success") {
-                window.location.href = "/home"
+                window.location.href = "/login"
             }
             console.log(res.data);
         })

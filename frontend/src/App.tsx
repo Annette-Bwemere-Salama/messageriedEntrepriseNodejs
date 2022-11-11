@@ -5,7 +5,7 @@ import AdminPage from "./Pages/AdminPage";
 import HomePages from "./Pages/HomePages";
 import Login from "./Pages/Login";
 import Profile from "./Pages/Profile";
-import Register from "./Pages/Register"
+import Register from "./Pages/register/Register"
 import { myContext } from "./Pages/Context";
 import "./app.scss"
 function App() {
@@ -22,7 +22,7 @@ function App() {
           ctx ? (
             <>
               {<Route path="/admin" element={<AdminPage />} />}
-              <Route path="/profile" element={<Profile />} />
+              {<Route path="/profile" element={<Profile />} />}
             </>
           ) : (
             <>
