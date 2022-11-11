@@ -8,7 +8,7 @@ import passport from 'passport';
 import User  from './models/User';
 import  dotenv from 'dotenv';
 import {UserInterface, DatabaseUserInterface} from "./interfaces/UserInterface";
-import {getRegister, getLogout, postDeleteUser, getAllusers, isAdministratorMiddleware} from "./routes/auth"
+// import {getRegister, getLogout, postDeleteUser, getAllusers, isAdministratorMiddleware} from "./routes/auth"
 import {mongodbConnection} from "./controllers/Database"
  const LocalStrategy = passportLocal.Strategy;
  dotenv.config();
