@@ -1,19 +1,17 @@
-import express, { Express} from 'express';
+import express, { Express, NextFunction} from 'express';
 import bscrypt from 'bcryptjs';
 import session from 'express-session';
 import cookieParser from 'cookie-parser'; 
 import passportLocal from 'passport-local';
 import cors from 'cors' ;
 import passport from 'passport';
-import User  from './User';
+import User  from './models/User';
 import  dotenv from 'dotenv';
 import {UserInterface, DatabaseUserInterface} from "./interfaces/UserInterface";
-import {getRegister, getLogout, postDeleteUser, getAllusers} from "../src/routes/register"
+import {getRegister, getLogout, postDeleteUser, getAllusers, isAdministratorMiddleware} from "../src/routes/register"
 import {mongodbConnection} from "./controllers/Database"
  const LocalStrategy = passportLocal.Strategy;
  dotenv.config();
-
-
 
 
 mongodbConnection;
@@ -56,7 +54,6 @@ passport.serializeUser((user : DatabaseUserInterface, cb)=>{
   cb(null,user._id);
 });
 
-
 passport.deserializeUser((id: string, cb)=>{
   User.findOne({_id: id}, (err: any, user : DatabaseUserInterface) =>{
     const userInformation : UserInterface = {
@@ -72,13 +69,13 @@ passport.deserializeUser((id: string, cb)=>{
 const port = process.env.PORT
 // app.post('/register', registerController.register());
 
-
 //routes
 app.post('/register',getRegister)
 
 
 app.post("/login", passport.authenticate("local"), (req, res) => {
   res.send("success")
+  
 });
 
 app.get("/user", (req,res)=>{
@@ -87,10 +84,10 @@ app.get("/user", (req,res)=>{
 
 app.get("/logout", getLogout)
 
-app.post("/deleteuser",postDeleteUser);
+app.post("/deleteuser",isAdministratorMiddleware, postDeleteUser);
 
 
-app.get("/getallusers", getAllusers);
+app.get("/getallusers",isAdministratorMiddleware, getAllusers);
 
 
 app.listen(4001, () => {

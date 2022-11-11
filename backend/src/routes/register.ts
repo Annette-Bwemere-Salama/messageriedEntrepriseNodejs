@@ -1,6 +1,6 @@
 
 import bscrypt from 'bcryptjs';
-import User  from '../User';
+import User  from '../models/User';
 import  {  Request, Response, NextFunction} from 'express';
 import {DatabaseUserInterface , UserInterface} from "../interfaces/UserInterface";
 // import passport from 'passport';
@@ -8,9 +8,12 @@ import {DatabaseUserInterface , UserInterface} from "../interfaces/UserInterface
  
 export const getRegister = async (req: Request, res: Response) => {
     const {username, password} = req?.body;
-    console.log("username:" + username + "password:" + password);
+    res.status(201).json({
+      message: 'suite!'
+    })
+    console.log("username:" + username + "password:" + password + "succes");
     
-    if (username || !password || typeof username !== "string" || typeof password !== "string") {
+    if (!username || !password) {
      
        res.send("Valeur incorrect");
        return;
@@ -34,7 +37,7 @@ export const getRegister = async (req: Request, res: Response) => {
  }
  
 
- const isAdministratorMiddleware = (req: Request, res: Response, next: NextFunction) =>{
+export  const isAdministratorMiddleware = (req: Request, res: Response, next: NextFunction) =>{
    const {user} : any = req;
    if (user) {
      User.findOne({ username: user.username}, (err: Error, doc:  DatabaseUserInterface) =>{
@@ -63,7 +66,7 @@ export const getRegister = async (req: Request, res: Response) => {
  };
 
  
- export const postDeleteUser = isAdministratorMiddleware, async: any (req: { body: { id: any; }; }, res: { send: (arg0: string) => void; }) =>{
+ export const postDeleteUser =async (req: Request, res: Response) =>{
    const {id} = req.body;
    await User.findByIdAndDelete(id, (err: Error) =>{
      if (err)throw err;
@@ -72,7 +75,7 @@ export const getRegister = async (req: Request, res: Response) => {
  }
 
     
- export const getAllusers = isAdministratorMiddleware, async : any (res : any)=>{
+ export const getAllusers = async (res : Response)=>{
    await  User.find({}, (err : Error,  data : DatabaseUserInterface[])=>{
      if(err) throw err;
      const filterdUsers: UserInterface[] = [];
