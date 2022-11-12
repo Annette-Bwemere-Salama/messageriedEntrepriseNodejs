@@ -45,3 +45,44 @@ export const deletePost = async (req: Request, res: Response) =>{
         res.status(500).json(error)
     }
 }
+
+
+//aimer post
+
+export const like = async (req: Request, res: Response) =>{
+    try {
+        const post = await Post.findById(req.params.id);
+        if (!post?.likes.includes(req.body.userId)) {
+            res.status(200).json("The post has  been liked, le post est aimer")
+        } else {
+            await post.updateOne({ $push: { likes: req.body.userId}});
+            res.status(200).json("the post has been disliked, ")
+        }
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+// voir le post 
+
+
+export const seePost = async (req: Request, res: Response) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        res.status(200).json(post)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+//get timeline posts 
+
+// export const seeTimesPost = async (req: Request, res: Response) {
+// try {
+//     const currentUser = await User.findById(req.params.userId);
+//     const userPosts = await Post.find({ userId: currentUser?._id});
+//     const friendPosts = await Promise.all(
+//         currentUser.followings.map
+//     )
+// }
+// }

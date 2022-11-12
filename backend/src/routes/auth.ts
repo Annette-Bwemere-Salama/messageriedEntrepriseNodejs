@@ -31,7 +31,7 @@ export const getLogin = async (req : Request, res: Response) =>{
     const user = await User.findOne({email: req.body.email});
     !user && res.status(404).json("user not found");
 
-    const validPassword = await bscrypt.compare(req.body.password, user?.password : String);
+    const validPassword = await bscrypt.compare(req.body.password, user?.password! );
      !validPassword && res.status(400).json("wrong passwor   mot de pass invalid")
 
      res.status(200).json(user)

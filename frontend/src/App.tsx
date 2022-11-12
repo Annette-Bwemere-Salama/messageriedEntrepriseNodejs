@@ -1,22 +1,20 @@
 import react, { useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import NavBar from "./Component/NavBar";
 import AdminPage from "./Pages/AdminPage";
-import HomePages from "./Pages/HomePages";
-import Login from "./Pages/Login";
-import Profile from "./Pages/Profile";
 import Register from "./Pages/register/Register"
 import { myContext } from "./Pages/Context";
 import "./app.scss"
 function App() {
-  const ctx = useContext(myContext);
-  console.log(ctx);
+  const { user } = useContext(AuthContext);
+  console.log(user);
 
   return (
     <BrowserRouter>
-      <NavBar />
 
       <Routes>
+        <Route path="/">
+          {user ? }
+        </Route>
         <Route path="/" element={<HomePages />} />
         {
           ctx ? (
