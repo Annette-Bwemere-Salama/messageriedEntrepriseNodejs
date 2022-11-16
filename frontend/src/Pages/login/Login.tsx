@@ -1,42 +1,70 @@
-import React, { useState, useRef } from 'react'
-import axios, { Axios } from "axios"
-import { AxiosResponse } from 'axios'
+import { useContext, useRef } from 'react';
+
+import "./login.css";
+// import { AuthContext } from '../../Component/context/AuthContext'
+import CircularIndeterminate from "./progress"
+// import { loginCall } from '../../apiCalls';
+
 export default function Login() {
-  const [username, setUsername] = useState<string>("")
-  const [password, setPassword] = useState<string>("")
 
+  // const email = useRef();
+  // const password = useRef();
+  // const { isFetching, dispatch: any} = useContext(AuthContext);
 
-  const login = (e: any) => {
-    e.preventDefault()
-    axios.post("http://localhost:4000/login", {
-      username,
-      password
-    }, {
-      withCredentials: true
-    }).then((res: AxiosResponse) => {
-      if (res.data === "success") {
-        window.location.href = "/home"
-      }
-      // }, () => {
-      //   console.log("failure");
-    })
-  }
-
+  // const handleClick = (e: { preventDefault: () => void; }) => {
+  //   e.preventDefault();
+  //   loginCall(
+  //     { email: email.current.value, password: password.current.value },
+  //     dispatch
+  //   );
+  // };
 
   return (
-    <div className='container'>
-      <div className='section'></div>
-      <form>
-        <h1>Login</h1>
-        <div className="input-field">
-          <input id="username" name="username" type="text" placeholder='Enter Username' onChange={e => setUsername(e.target.value)} />
+    <div className="login">
+      <div className="loginWrapper">
+        <div className="loginLeft">
+          <h3 className="loginLogo">AnnyChat</h3>
+          <span className="loginDesc">
+            Connect with friends and the world around you on AnnyChat.
+          </span>
         </div>
-        <div>
-          <input id="password" name="password" type="password" placeholder="Enter Password" onChange={e => setPassword(e.target.value)} />
+        <div className="loginRight">
+          <form className="loginBox" >
+          {/* // onSubmit={handleClick} */}
+            <input
+              placeholder="Email"
+              type="email"
+              required
+              className="loginInput"
+              // ref={email}
+            />
+            <input
+              placeholder="Password"
+              type="password"
+              required
+              className="loginInput"
+              // ref={password}
+            />
+            {/* <button className="loginButton" type="submit" 
+            // disabled={isFetching}>
+            //   {isFetching ? (
+            //     <CircularIndeterminate />
+            //   ) : (
+            //     "Log In"
+            //   )}
+            </button> */}
+            <button className="loginButton" type="submit">Log In</button>
+            <span className="loginForgot">Forgot Password?</span>
+            <button className="loginRegisterButton">
+              {/* {isFetching ? (
+                <CircularIndeterminate />
+              ) : (
+                "Create a New Account"
+              )} */}
+            </button>
+          </form>
         </div>
-        <button onClick={(e) => login(e)} className="btn">Login</button>
-      </form>
-    </div>
-
+      </div>
+    // </div>
   )
 }

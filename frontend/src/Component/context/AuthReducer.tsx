@@ -1,4 +1,4 @@
-const AuthReducer = (state, action) =>{
+function AuthReducer(state: any, action: any){
     switch (action.type) {
         case "LOGIN_START":
          return {
@@ -32,7 +32,7 @@ const AuthReducer = (state, action) =>{
               user: {
                 ...state.user,
                 followings: state.user.followings.filter(
-                  (following) => following !== action.payload
+                  (following: any) => following !== action.payload
                 ),
               },
             };

@@ -1,41 +1,92 @@
-import React, { useState, Fragment } from 'react'
-import axios, { AxiosResponse } from "axios"
+import axios from "axios";
+import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+import "./register.css";
 
 export default function Register() {
-    const [username, setUsername] = useState<string>("")
-    const [password, setPassword] = useState<string>("")
+
+    const [infosUser, setInfosUser] = useState({
+        username: "",
+        email: "",
+        password: "",
+        passwordAgain: ""
+    });
 
 
-    const Register = (e: any) => {
-        e.preventDefault()
-        axios.post("http://localhost:4001/register", {
-            username,
-            password
-        }, {
-            withCredentials: true
-        }).then((res: AxiosResponse) => {
-            if (res.data === "success") {
-                window.location.href = "/login"
-            }
-            console.log(res.data);
-        })
+    const handleChange = (e: any) => {
+        setInfosUser({ ...infosUser, [e.target.name]: e.target.value })
     }
+
+    const handleSubmit = (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+
+        // if (PasswordAgain.value !== password.value){
+        //   passewodrAgain.value.ValidityState("passwords don't match!")
+        // }else{
+        //   const user = {
+        //     username: username.value,
+        //     email: email.value,
+        //     password: password.value
+        //   }try {
+        //     await axios.post("/auth/register", user );
+        //     ValidityState.push("/login");
+        //   }catch (error) {
+        //     console.log(error)
+        //   }
+        // }
+    }
+
     return (
-        <Fragment>
-            <h1>Register</h1>
+        <div className="login">
+            <div className="loginWrapper">
+                <div className="loginLeft">
+                    <h3 className="loginLogo">AnnyChatt</h3>
+                    <span className="loginDesc">
+                        Connect with friends and the world around you on AnnyChatt.
+                    </span>
+                </div>
+                <div className="loginRight">
+                    <form className="loginBox" onSubmit={handleSubmit}>
 
-            <div>
-                <section>
-                    {/* <label htmlFor="username">Username</label> */}
-                    <input id="username" name="username" type="text" autoComplete="username" required autoFocus placeholder='username' onChange={e => setUsername(e.target.value)} />
-                </section>
-                <section>
-                    {/* <label htmlFor="current-password">Password</label> */}
-                    <input id="current-password" name="password" type="password" autoComplete="current-password" required placeholder="password" onChange={e => setPassword(e.target.value)} />
-                </section>
-                <button onClick={(e) => Register(e)}>Login</button>
+                        <input
+                            placeholder="Username"
+                            required
+                            className="loginInput"
+                            onChange={handleChange}
+
+
+                        />
+                        <input
+                            placeholder="Email"
+                            required
+                            className="loginInput"
+                            type="email"
+                        />
+                        <input
+                            placeholder="Password"
+                            required
+                            className="loginInput"
+                            type="password"
+                            onChange={handleChange}
+
+
+                        />
+                        <input
+                            placeholder="Password Again"
+                            required
+                            className="loginInput"
+                            type="password"
+                            onChange={handleChange}
+                            name="password"
+
+                        />
+                        <button className="loginButton" type="submit">
+                            Sign Up
+                        </button>
+                        <button className="loginRegisterButton">Log into Account</button>
+                    </form>
+                </div>
             </div>
-        </Fragment>
-
+        </div >
     )
 }

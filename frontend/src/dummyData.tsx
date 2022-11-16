@@ -5,39 +5,39 @@ export const Users = [
     username: "Annette Bwemere"
 },
 {
-    id:1,
+    id:2,
     profilePicture: "person/2.jpg",
     username: "Annette Bwemere"
 },{
-    id:1,
+    id:3,
     profilePicture: "person/3.jpg",
     username: "Obedi Ndevu"
 },{
-    id:1,
+    id:4,
     profilePicture: "person/4.jpg",
     username: "Cedrick Karungu"
 },{
-    id:1,
+    id:5,
     profilePicture: "person/5.jpg",
     username: "Gloire Mutaliko"
 },{
-    id:1,
+    id:6,
     profilePicture: "person/6.jpg",
     username: "Thierry "
 },{
-    id:1,
+    id:7,
     profilePicture: "person/7.jpg",
     username: "Diemerci"
 },{
-    id:1,
+    id:8,
     profilePicture: "person/8.jpg",
     username: "Alexisss"
 },{
-    id:1,
+    id:9,
     profilePicture: "person/9.jpg",
     username: "Valentin ValVal"
 },{
-    id:1,
+    id:10,
     profilePicture: "person/10.jpg",
     username: "Sam Sam Samuel"
 },
