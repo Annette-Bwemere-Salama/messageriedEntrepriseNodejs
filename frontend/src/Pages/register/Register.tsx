@@ -1,39 +1,27 @@
 import axios from "axios";
 import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./register.css";
 
 export default function Register() {
 
-    const [infosUser, setInfosUser] = useState({
-        username: "",
-        email: "",
-        password: "",
-        passwordAgain: ""
-    });
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
 
-    const handleChange = (e: any) => {
-        setInfosUser({ ...infosUser, [e.target.name]: e.target.value })
-    }
 
-    const handleSubmit = (e: { preventDefault: () => void; }) => {
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-
-        // if (PasswordAgain.value !== password.value){
-        //   passewodrAgain.value.ValidityState("passwords don't match!")
-        // }else{
-        //   const user = {
-        //     username: username.value,
-        //     email: email.value,
-        //     password: password.value
-        //   }try {
-        //     await axios.post("/auth/register", user );
-        //     ValidityState.push("/login");
-        //   }catch (error) {
-        //     console.log(error)
-        //   }
-        // }
+        const infosUser = {
+            email, username, password
+        }
+        try {
+            const response = await axios.post("http://localhost:4000/register", infosUser)
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return (
@@ -46,13 +34,15 @@ export default function Register() {
                     </span>
                 </div>
                 <div className="loginRight">
-                    <form className="loginBox" onSubmit={handleSubmit}>
+                    <form className="loginBox" onSubmit={handleSubmit}
+                    >
 
                         <input
                             placeholder="Username"
                             required
                             className="loginInput"
-                            onChange={handleChange}
+                            onChange={(e: any) => setUsername(e.target.value)}
+
 
 
                         />
@@ -61,13 +51,16 @@ export default function Register() {
                             required
                             className="loginInput"
                             type="email"
+                            onChange={(e: any) => setEmail(e.target.value)}
+
                         />
                         <input
                             placeholder="Password"
                             required
                             className="loginInput"
                             type="password"
-                            onChange={handleChange}
+                            onChange={(e: any) => setPassword(e.target.value)}
+
 
 
                         />
@@ -76,11 +69,10 @@ export default function Register() {
                             required
                             className="loginInput"
                             type="password"
-                            onChange={handleChange}
                             name="password"
 
                         />
-                        <button className="loginButton" type="submit">
+                        <button className="loginButton" type="submit" >
                             Sign Up
                         </button>
                         <button className="loginRegisterButton">Log into Account</button>

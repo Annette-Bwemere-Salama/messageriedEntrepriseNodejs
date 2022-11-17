@@ -12,17 +12,16 @@ import {
 import { useContext } from "react";
 
 
-import { AuthContext } from "./Component/context/AuthContext"
+// import { AuthContext } from "./Component/context/AuthContext"
 
 function App() {
-  const { user } = useContext(AuthContext);
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Register />} />
-        <Route path='/home' element={<Home />} />
-        <Route path='/messenger' element={<Messenger />} />
+        <Route path='/' element={<Home />} />
+        <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/messenger' element={<Messenger />} />
 
 
 

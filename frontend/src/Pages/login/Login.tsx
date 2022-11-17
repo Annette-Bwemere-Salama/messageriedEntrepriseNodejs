@@ -1,23 +1,23 @@
-import { useContext, useRef } from 'react';
+import axios from 'axios';
+import { useState } from 'react';
 
 import "./login.css";
-// import { AuthContext } from '../../Component/context/AuthContext'
-import CircularIndeterminate from "./progress"
-// import { loginCall } from '../../apiCalls';
 
 export default function Login() {
 
-  // const email = useRef();
-  // const password = useRef();
-  // const { isFetching, dispatch: any} = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [username, setusername] = useState("");
+  const [password, setpassword] = useState("");
 
-  // const handleClick = (e: { preventDefault: () => void; }) => {
-  //   e.preventDefault();
-  //   loginCall(
-  //     { email: email.current.value, password: password.current.value },
-  //     dispatch
-  //   );
-  // };
+
+  const handleSubmit = async (e: any) => {
+    const userInput = {
+      email, username, password,
+    }
+    e.preventDefault();
+    const res = await axios.post('http://localhost:4000/login', userInput)
+    console.log(res.data)
+  }
 
   return (
     <div className="login">
@@ -30,37 +30,26 @@ export default function Login() {
         </div>
         <div className="loginRight">
           <form className="loginBox" >
-          {/* // onSubmit={handleClick} */}
             <input
               placeholder="Email"
               type="email"
+              name='email'
               required
               className="loginInput"
-              // ref={email}
+              onChange={(e: any) => setEmail(e.target.value)}
             />
             <input
               placeholder="Password"
               type="password"
               required
               className="loginInput"
-              // ref={password}
+              name='password'
+              onChange={(e: any) => setpassword(e.target.value)}
             />
-            {/* <button className="loginButton" type="submit" 
-            // disabled={isFetching}>
-            //   {isFetching ? (
-            //     <CircularIndeterminate />
-            //   ) : (
-            //     "Log In"
-            //   )}
-            </button> */}
-            <button className="loginButton" type="submit">Log In</button>
+
+            <button className="loginButton" type="submit" onSubmit={handleSubmit}>Log In</button>
             <span className="loginForgot">Forgot Password?</span>
             <button className="loginRegisterButton">
-              {/* {isFetching ? (
-                <CircularIndeterminate />
-              ) : (
-                "Create a New Account"
-              )} */}
             </button>
           </form>
         </div>
