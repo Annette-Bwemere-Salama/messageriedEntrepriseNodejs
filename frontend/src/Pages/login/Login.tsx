@@ -11,12 +11,17 @@ export default function Login() {
 
 
   const handleSubmit = async (e: any) => {
+    e.preventDefault();
     const userInput = {
       email, username, password,
     }
-    e.preventDefault();
-    const res = await axios.post('http://localhost:4000/login', userInput)
-    console.log(res.data)
+    try {
+      const res = await axios.post('http://localhost:4000/login', userInput)
+      console.log(res.data)
+    } catch (error) {
+      console.log(error);
+
+    }
   }
 
   return (
@@ -29,7 +34,7 @@ export default function Login() {
           </span>
         </div>
         <div className="loginRight">
-          <form className="loginBox" >
+          <form className="loginBox" onSubmit={handleSubmit} >
             <input
               placeholder="Email"
               type="email"
@@ -47,7 +52,7 @@ export default function Login() {
               onChange={(e: any) => setpassword(e.target.value)}
             />
 
-            <button className="loginButton" type="submit" onSubmit={handleSubmit}>Log In</button>
+            <button className="loginButton" type="submit" >Log In</button>
             <span className="loginForgot">Forgot Password?</span>
             <button className="loginRegisterButton">
             </button>
