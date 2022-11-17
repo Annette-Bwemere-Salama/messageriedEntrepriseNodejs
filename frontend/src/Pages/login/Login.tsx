@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+// import Messenger from '../messenger/Messenger';
 
 import "./login.css";
 
@@ -8,9 +10,11 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
+  const navigate = useNavigate()
 
 
   const handleSubmit = async (e: any) => {
+
     e.preventDefault();
     const userInput = {
       email, username, password,
@@ -18,6 +22,7 @@ export default function Login() {
     try {
       const res = await axios.post('http://localhost:4000/login', userInput)
       console.log(res.data)
+      if (res.data) return navigate("/messenger")
     } catch (error) {
       console.log(error);
 

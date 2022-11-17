@@ -8,6 +8,8 @@ export default function Register() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate()
+
 
 
 
@@ -17,8 +19,10 @@ export default function Register() {
             email, username, password
         }
         try {
-            const response = await axios.post("http://localhost:4000/register", infosUser)
-            console.log(response.data);
+            const res = await axios.post("http://localhost:4000/register", infosUser)
+            console.log(res.data);
+            if (res.data) await navigate("/messenger")
+
         } catch (error) {
             console.error(error);
         }
