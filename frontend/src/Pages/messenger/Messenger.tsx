@@ -1,14 +1,26 @@
-import React, { useEffect } from 'react'
-import openSocket from "socket.io-client";
+import React, { useEffect, useState } from 'react'
+// import openSocket from "socket.io-client";
+import axios from "axios"
 
 export default function Messenger() {
 
-    useEffect(() => {
-        openSocket('http://localhost:4000');
+    const [users, setUsers] = useState([])
 
-        return () => {
+    useEffect(() => {
+        const getUsers = async () => {
+            try {
+                const res = await axios.get("http://localhost:4000/users")
+                const data =  res.data
+                setUsers(data)
+                console.log(data);
+
+// 
+            } catch (error) {
+                console.log(error);
+            }
 
         }
+        getUsers()
     }, [])
 
     return (
