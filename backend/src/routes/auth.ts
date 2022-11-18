@@ -1,11 +1,19 @@
 
 import bscrypt from 'bcryptjs';
 import User  from '../models/User';
+import router from "express"
 import  {  Request, Response} from 'express';
 
+import Conversation from '../models/Conversation';
+
+
+router.Router();
  
 export const getRegister = async (req: Request, res: Response) =>{
+  console.log(req.body);
+  
   try {
+    
     //generer u nouveau password
     const salt = await bscrypt.genSalt(10);
     const hashedPassword = await bscrypt.hashSync(req.body.password, salt);
@@ -25,20 +33,71 @@ export const getRegister = async (req: Request, res: Response) =>{
   }
 };
 
-
 export const getLogin = async (req : Request, res: Response) =>{
   try {
     const user = await User.findOne({email: req.body.email});
-    !user && res.status(404).json("user not found");
+    if(!user) res.status(404).json("user not found");
+    else {
 
-    const validPassword = await bscrypt.compare(req.body.password, user?.password! );
-     !validPassword && res.status(400).json("wrong passwor   mot de pass invalid")
-
-     res.status(200).json(user)
+      const validPassword = await bscrypt.compare(req.body.password, user?.password! );
+      !validPassword && res.status(400).json("wrong passwor   mot de pass invalid")
+      
+      res.status(200).json(user)
+    }
   } catch (err) {
     res.status(500).json(err)
   }
 }
+
+
+
+export const addConversation = async (req : Request, res: Response) =>{
+        const newConversation = new Conversation({
+            members: [req.body.senderID, req.body.receiverID]
+        });
+        try {
+            const savedConversation = await newConversation.save();
+            res.status(200).json(savedConversation)
+        } catch (error) {
+            res.status(500).json(error)
+        }
+       
+}     
+
+export const seeUserId = async (req : Request, res: Response) =>{
+  try {
+    const conversation = await Conversation.find({
+      members: { $in: [req.params.userID]}
+    })
+  res.status(200).json(conversation)
+  } catch (error) {
+    res.status(500).json(error)
+    
+  }
+}
+
+
+
+
+//new conversation
+
+
+
+//get conve of a user
+
+// router.get('/:user', async)
+
+
+// export const postLogin = async (req : Request, res: Response) =>{
+//   try {
+//     // res.setHeader('Set-Cookie', "loggedIn=true")
+//     // console.log(res.get('Cookie')?.slice(';')[1].trim().split("="));
+    
+//     res.redirect('/')
+//   } catch (error) {
+    
+//   }
+// }
 
 
 
