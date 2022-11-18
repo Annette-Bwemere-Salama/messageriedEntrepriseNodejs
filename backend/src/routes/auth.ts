@@ -3,8 +3,10 @@ import bscrypt from 'bcryptjs';
 import User  from '../models/User';
 import router from "express"
 import  {  Request, Response} from 'express';
-
+import Message from "../models/Message"
 import Conversation from '../models/Conversation';
+import { DatabaseUserInterface, UserInterface } from 'src/interfaces/UserInterface';
+// import { Item } from 'react-bootstrap/lib/Breadcrumb';
 
 
 router.Router();
@@ -51,6 +53,46 @@ export const getLogin = async (req : Request, res: Response) =>{
 
 
 
+// export const getAllusers = async (req : Request, res: Response) =>{
+
+//   try {
+//     await User.find({}, (err: Error, data: DatabaseUserInterface[])=>{
+//       if(err) throw err;
+//       const filterdUsers: UserInterface[] = [];
+//       data.forEach((item; DatabaseUserInterface) =>{
+//         const userInformation = {
+//           id: item._id,
+//           username: Item.username,
+
+//         }
+//       })
+//     })
+//   } catch (error) {
+    
+//   }
+// }
+
+
+
+
+export const getAllusers = async (req: Request, res: Response)=>{
+  try {
+    const users = await User.find({}, (data: DatabaseUserInterface[])=>{
+      // const filterdUsers: UserInterface[] = [];
+      // data.forEach()
+      res.status(200).json({data: users});
+    })
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
+
+
+
+
+
 export const addConversation = async (req : Request, res: Response) =>{
         const newConversation = new Conversation({
             members: [req.body.senderID, req.body.receiverID]
@@ -77,6 +119,35 @@ export const seeUserId = async (req : Request, res: Response) =>{
 }
 
 
+export const addMessage = async (req : Request, res: Response) =>{
+  const newMessage = new Message(req.body)
+  try {
+    const savedMessage = await newMessage.save();
+    res.status(200).json(savedMessage)
+  } catch (error) {
+    res.status(500).json(error)
+    
+  }
+}
+export const messageId = async (req : Request, res: Response) =>{
+    try {
+      const messages = await Message.find({
+        conversationId: req.params.conversationId
+       });
+       res.status(200).json(messages)
+
+    } catch (error) {
+      res.status(500).json
+    }
+  
+  
+
+}
+
+
+
+
+
 
 
 //new conversation
@@ -84,20 +155,6 @@ export const seeUserId = async (req : Request, res: Response) =>{
 
 
 //get conve of a user
-
-// router.get('/:user', async)
-
-
-// export const postLogin = async (req : Request, res: Response) =>{
-//   try {
-//     // res.setHeader('Set-Cookie', "loggedIn=true")
-//     // console.log(res.get('Cookie')?.slice(';')[1].trim().split("="));
-    
-//     res.redirect('/')
-//   } catch (error) {
-    
-//   }
-// }
 
 
 

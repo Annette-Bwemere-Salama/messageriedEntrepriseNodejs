@@ -2,7 +2,7 @@
 import  dotenv from 'dotenv';
 import cors from 'cors'
 import mongoose , {Error, ConnectOptions} from 'mongoose';
-import  {getRegister, getLogin, addConversation,seeUserId } from "./routes/auth"
+import  {getRegister, getLogin, addConversation,seeUserId , addMessage, messageId, getAllusers} from "./routes/auth"
 // import {addConversation} from "./routes/conversation"
 import path from 'path';
 import helmet from 'helmet';
@@ -47,6 +47,10 @@ app.post("/register",getRegister);
 app.post("/login", getLogin);
 app.post("/conversation", addConversation );
 app.get ('/:userID', seeUserId)
+app.post('/messenger', addMessage)
+app.get('/:conversationId', messageId)
+app.get('/users', getAllusers)
+
 
 io.on("connection", (socket: any)=>{
   console.log("welcom in socketAnnyChat");
