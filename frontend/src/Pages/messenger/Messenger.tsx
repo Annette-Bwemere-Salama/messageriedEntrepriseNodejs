@@ -47,7 +47,7 @@ export default function Messenger() {
                     </a>
                     <ul className="flex flex-col space-y-2 mt-12">
                         <li>
-                            <a href="#"
+                            <a href="/login"
                                 className="flex items-center">
                                 <span className="flex items-center justify-center text-indigo-100 hover:bg-indigo-700 h-12 w-12 rounded-2xl">
                                     <svg className="w-6 h-6"
@@ -64,7 +64,7 @@ export default function Messenger() {
                             </a>
                         </li>
                         <li>
-                            <a href="#"
+                            <a href="/messenger"
                                 className="flex items-center">
                                 <span className="flex items-center justify-center text-indigo-100 hover:bg-indigo-700 h-12 w-12 rounded-2xl">
                                     <svg className="w-6 h-6"
@@ -81,21 +81,6 @@ export default function Messenger() {
                             </a>
                         </li>
                         <li>
-                            <a href="#"
-                                className="flex items-center">
-                                <span className="flex items-center justify-center text-indigo-100 hover:bg-indigo-700 h-12 w-12 rounded-2xl">
-                                    <svg className="w-6 h-6"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                    </svg>
-                                </span>
-                            </a>
                         </li>
                         <li>
                             <a href="#"
@@ -136,7 +121,7 @@ export default function Messenger() {
                     <div className="flex flex-row items-center">
                         <div className="flex flex-row items-center">
                             <div className="text-xl font-semibold">Messages</div>
-                            <div className="flex items-center justify-center ml-2 text-xs h-5 w-5 text-white bg-red-500 rounded-full font-medium">5</div>
+                            <div className="flex items-center justify-center ml-2 text-xs h-5 w-5 text-white bg-blue-500 rounded-full font-medium">5</div>
                         </div>
                         <div className="ml-auto">
                             <button className="flex items-center justify-center h-7 w-7 bg-gray-200 text-gray-500 rounded-full">
@@ -172,232 +157,16 @@ export default function Messenger() {
                     </div>
                     <div className="h-full overflow-hidden relative pt-2">
                         <div className="flex flex-col divide-y h-full overflow-y-auto -mx-4">
-                            {users ? users.map((user: any) => (<Profile user={user} />)) : (<div>Pas d'utilisateur </div>)}
+                            {users ? users.map((user: any, index: number) => (<Profile user={user}  key={index}/>)) : (<div>Pas d'utilisateur </div>)}
                             <Profile user={undefined} />
 
                         </div>
                         <div className="absolute bottom-0 right-0 mr-2">
-                            {/* <button className="flex items-center justify-center shadow-sm h-10 w-10 bg-red-500 text-white rounded-full">
-                                <svg className="w-6 h-6"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                </svg>
-                            </button> */}
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col h-full w-full bg-white px-4 py-6">
-                <div className="flex flex-row items-center py-4 px-6 rounded-2xl shadow">
-                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-pink-500 text-pink-100">
-                        T
-                    </div>
-                    <div className="flex flex-col ml-3">
-                        <div className="font-semibold text-sm">GDA Team</div>
-                        <div className="text-xs text-gray-500">Active</div>
-                    </div>
-                    <div className="ml-auto">
-                        <ul className="flex flex-row items-center space-x-2">
-                            <li>
-                                <a href="#"
-                                    className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-400 h-10 w-10 rounded-full">
-                                    <span>
-                                        <svg className="w-5 h-5"
-                                            fill="currentColor"
-                                            stroke="none"
-                                            viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                                        </svg>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-400 h-10 w-10 rounded-full">
-                                    <span>
-                                        <svg className="w-5 h-5"
-                                            fill="currentColor"
-                                            stroke="none"
-                                            viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                                        </svg>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-400 h-10 w-10 rounded-full">
-                                    <span>
-                                        <svg className="w-5 h-5"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                                        </svg>
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="h-full overflow-hidden py-4">
-                    <div className="h-full overflow-y-auto">
-                        <div className="grid grid-cols-12 gap-y-2">
-                            <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                                <div className="flex flex-row items-center">
-                                    <div
-                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                    >
-                                        A
-                                    </div>
-                                    <div
-                                        className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                    >
-                                        <div>Hey How are you today?</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                                <div className="flex flex-row items-center">
-                                    <div
-                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                    >
-                                        A
-                                    </div>
-                                    <div
-                                        className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                    >
-                                        <div>
-                                            Il aura cours n'oublie pas de vénir en temps les vacances ont pris fin.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                                <div className="flex items-center justify-start flex-row-reverse">
-                                    <div
-                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                    >
-                                        A
-                                    </div>
-                                    <div
-                                        className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
-                                    >
-                                        <div>Hey comment tu va?</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                                <div className="flex items-center justify-start flex-row-reverse">
-                                    <div
-                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                    >
-                                        A
-                                    </div>
-                                    <div
-                                        className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
-                                    >
-                                        <div>
-                                            Hum tu ne peux pas faire ça ma belle
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                                <div className="flex flex-row items-center">
-                                    <div
-                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                    >
-                                        A
-                                    </div>
-                                    <div
-                                        className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                    >
-                                        <div>
-                                            je serai au Gda en Rétard j'ai vraiment un rendez-vous de l'hopital avec mon gynecologue
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                                <div className="flex flex-row items-center">
-                                    <div
-                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                    >
-                                        A
-                                    </div>
-                                    <div
-                                        className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                    >
-                                        <div className="flex flex-row items-center">
-                                            {/* <button
-                                                className="flex items-center justify-center bg-indigo-600 hover:bg-indigo-800 rounded-full h-8 w-10"
-                                            >
-                                                <svg
-                                                    className="w-6 h-6 text-white"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        stroke-width="1.5"
-                                                        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                                                    ></path>
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        stroke-width="1.5"
-                                                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                    ></path>
-                                                </svg>
-                                            </button> */}
-                                            <div className="flex flex-row items-center space-x-px ml-4">
-                                                <div className="h-10 w-1 bg-gray-500 rounded-lg"></div>
-                                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                                <div className="h-10 w-1 bg-gray-500 rounded-lg"></div>
-                                                <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                                                <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                                                <div className="h-1 w-1 bg-gray-500 rounded-lg"></div>
-                                                <div className="h-1 w-1 bg-gray-500 rounded-lg"></div>
-                                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                                <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                                                <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                                <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                                                <div className="h-4 w-1 bg-gray-500 rounded-lg"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <Conversation />
-            </div>
+            <Conversation/>
         </div>
 
     )
