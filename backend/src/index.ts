@@ -3,7 +3,6 @@ import  dotenv from 'dotenv';
 import cors from 'cors'
 import mongoose , {Error, ConnectOptions} from 'mongoose';
 import  {getRegister, getLogin, addConversation,seeUserId , addMessage, messageId, getAllusers} from "./routes/auth"
-// import {addConversation} from "./routes/conversation"
 import path from 'path';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -41,15 +40,15 @@ app.use(morgan("common"))
 
 
 
-console.log(process.env);
+// console.log(process.env);
 
 app.post("/register",getRegister);
 app.post("/login", getLogin);
+app.get('/users', getAllusers)
 app.post("/conversation", addConversation );
 app.get ('/:userID', seeUserId)
 app.post('/messenger', addMessage)
 app.get('/:conversationId', messageId)
-app.get('/users', getAllusers)
 
 
 io.on("connection", (socket: any)=>{

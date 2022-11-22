@@ -53,42 +53,15 @@ export const getLogin = async (req : Request, res: Response) =>{
 
 
 
-// export const getAllusers = async (req : Request, res: Response) =>{
-
-//   try {
-//     await User.find({}, (err: Error, data: DatabaseUserInterface[])=>{
-//       if(err) throw err;
-//       const filterdUsers: UserInterface[] = [];
-//       data.forEach((item; DatabaseUserInterface) =>{
-//         const userInformation = {
-//           id: item._id,
-//           username: Item.username,
-
-//         }
-//       })
-//     })
-//   } catch (error) {
-    
-//   }
-// }
-
-
-
-
 export const getAllusers = async (req: Request, res: Response)=>{
   try {
-    const users = await User.find({}, (data: DatabaseUserInterface[])=>{
-      // const filterdUsers: UserInterface[] = [];
-      // data.forEach()
-      res.status(200).json({data: users});
-    })
+    const users = await User.find()
+    res.status(200).json( users);
   } catch (error) {
     console.log(error);
-    
+    res.status(500).json( error);
   }
 }
-
-
 
 
 
