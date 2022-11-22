@@ -16,7 +16,7 @@ export default function Registration() {
             email, username, password
         }
         try {
-            const res = await axios.post("http://localhost:4000/register", infosUser)
+            const res = await axios.post("http://localhost:5000/register", infosUser)
             console.log(res.data);
             if (res.data) await navigate("/messenger")
 
@@ -32,7 +32,8 @@ export default function Registration() {
                 <div>
                     <a href="/">
                         <h3 className="text-4xl font-bold text-purple-600">
-                            AnnyChatt
+                            Welcom to
+                            AnnyChatt.com
                         </h3>
                     </a>
                 </div>
@@ -125,7 +126,7 @@ export default function Registration() {
                     <div className="mt-4 text-grey-600">
                         Already have an account?{" "}
                         <span>
-                            <a className="text-purple-600 hover:underline" href="#">
+                            <a className="text-purple-600 hover:underline" href="/login">
                                 Log in
                             </a>
                         </span>

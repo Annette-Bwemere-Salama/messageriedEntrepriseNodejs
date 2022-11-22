@@ -1,75 +1,9 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+
+
 import Messenger from '../messenger/Messenger';
-
-// import "./login.css";
-
-// export default function Login() {
-
-//   const [email, setEmail] = useState("");
-//   const [username, setusername] = useState("");
-//   const [password, setpassword] = useState("");
-//   const navigate = useNavigate()
-
-
-//   const handleSubmit = async (e: any) => {
-
-//     e.preventDefault();
-//     const userInput = {
-//       email, username, password,
-//     }
-//     try {
-//       const res = await axios.post('http://localhost:4000/login', userInput)
-//       console.log(res.data)
-//       if (res.data) return navigate("/messenger")
-//     } catch (error) {
-//       console.log(error);
-
-//     }
-//   }
-
-//   return (
-//     <div className="login">
-//       <div className="loginWrapper">
-//         <div className="loginLeft">
-//           <h3 className="loginLogo">AnnyChat</h3>
-//           <span className="loginDesc">
-//             Connect with friends and the world around you on AnnyChat.
-//           </span>
-//         </div>
-//         <div className="loginRight">
-//           <form className="loginBox" onSubmit={handleSubmit} >
-//             <input
-//               placeholder="Email"
-//               type="email"
-//               name='email'
-//               required
-//               className="loginInput"
-//               onChange={(e: any) => setEmail(e.target.value)}
-//             />
-//             <input
-//               placeholder="Password"
-//               type="password"
-//               required
-//               className="loginInput"
-//               name='password'
-//               onChange={(e: any) => setpassword(e.target.value)}
-//             />
-
-//             <button className="loginButton" type="submit" >Log In</button>
-//             <span className="loginForgot">Forgot Password?</span>
-//             <button className="loginRegisterButton">
-//             </button>
-//           </form>
-//         </div>
-//       </div>
-//     // </div>
-//   )
-// }
-
-
-
 
 export default function Login() {
 
@@ -88,7 +22,7 @@ export default function Login() {
       email, username, password,
     }
     try {
-      const res = await axios.post('http://localhost:4000/login', userInput)
+      const res = await axios.post('http://localhost:5000/login', userInput)
       console.log(res.data)
       if (res.data) return navigate("/messenger")
     } catch (error) {
@@ -103,7 +37,8 @@ export default function Login() {
         <div>
           <a href="/">
             <h3 className="text-4xl font-bold text-purple-600">
-              AnnyChatt
+              Welcom To
+              AnnyChatt.com
             </h3>
           </a>
         </div>
@@ -155,7 +90,9 @@ export default function Login() {
           <div className="mt-4 text-grey-600">
             Already havent an account?{" "}
             <span>
-              <a className="text-purple-600 hover:underline" href="#">
+
+              <a className="text-purple-600 hover:underline" href="/register" >
+
                 Register
               </a>
             </span>
