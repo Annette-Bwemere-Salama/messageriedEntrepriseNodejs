@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom"
 import Profile from '../profile/Profile';
+import CallIcon from '@mui/icons-material/Call';
+import VideoCallIcon from '@mui/icons-material/VideoCall';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 
 
 export default function Conversation() {
@@ -59,16 +63,7 @@ export default function Conversation() {
                             <a href="#"
                                 className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-400 h-10 w-10 rounded-full">
                                 <span>
-                                    <svg className="w-5 h-5"
-                                        fill="currentColor"
-                                        stroke="none"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                                    </svg>
+                                    <CallIcon />
                                 </span>
                             </a>
                         </li>
@@ -76,16 +71,7 @@ export default function Conversation() {
                             <a href="#"
                                 className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-400 h-10 w-10 rounded-full">
                                 <span>
-                                    <svg className="w-5 h-5"
-                                        fill="currentColor"
-                                        stroke="none"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                                    </svg>
+                                    <VideoCallIcon />
                                 </span>
                             </a>
                         </li>
@@ -93,16 +79,7 @@ export default function Conversation() {
                             <a href="#"
                                 className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-400 h-10 w-10 rounded-full">
                                 <span>
-                                    <svg className="w-5 h-5"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                                    </svg>
+                                    < MoreVertIcon />
                                 </span>
                             </a>
                         </li>
@@ -112,23 +89,6 @@ export default function Conversation() {
             <div className="h-full overflow-hidden py-4">
                 <div className="h-full overflow-y-auto">
                     <div className="grid grid-cols-12 gap-y-2">
-                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                            {messages ? messages.map((message: any, _index: any) => (<div className='relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl my-3'>{message.text}</div>)) : (<div>Pas d'utilisateur </div>)}
-
-                            <div className="flex flex-row items-center">
-                                <div
-                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                >
-                                    A
-                                </div>
-                                <div
-                                    className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                >
-                                    <div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div className="col-start-6 col-end-13 p-3 rounded-lg">
                             <div className="flex items-center justify-start flex-row-reverse">
                                 <div
@@ -160,6 +120,25 @@ export default function Conversation() {
                                 </div>
                             </div>
                         </div>
+                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
+                            {messages ? messages.map((message: any, _index: any) => (<div className='relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl my-3'>{message.text}</div>)) : (<div>Pas d'utilisateur </div>)}
+
+                            <div className="flex flex-row items-center">
+                                <div
+                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                                >
+                                    A
+                                </div>
+                                <div
+                                    className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                                >
+                                    <div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <div className="col-start-1 col-end-8 p-3 rounded-lg">
                             <div className="flex flex-row items-center">
                                 <div

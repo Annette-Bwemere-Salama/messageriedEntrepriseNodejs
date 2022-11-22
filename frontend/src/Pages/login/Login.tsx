@@ -2,9 +2,6 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
-
-import Messenger from '../messenger/Messenger';
-
 export default function Login() {
 
 
@@ -37,8 +34,7 @@ export default function Login() {
         <div>
           <a href="/">
             <h3 className="text-4xl font-bold text-purple-600">
-              Welcom To
-              AnnyChatt.com
+                            AnnyChatt
             </h3>
           </a>
         </div>
