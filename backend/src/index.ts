@@ -1,98 +1,71 @@
-import express, { Express} from 'express';
-import bscrypt from 'bcryptjs';
-import session from 'express-session';
-import cookieParser from 'cookie-parser'; 
-import passportLocal from 'passport-local';
-import cors from 'cors' ;
-import passport from 'passport';
-import User  from './User';
+ import express, { } from 'express';
 import  dotenv from 'dotenv';
-import {UserInterface, DatabaseUserInterface} from "./interfaces/UserInterface";
-import {getRegister, getLogout, postDeleteUser, getAllusers} from "../src/routes/register"
-import {mongodbConnection} from "./controllers/Database"
- const LocalStrategy = passportLocal.Strategy;
+import cors from 'cors'
+import mongoose , {Error, ConnectOptions} from 'mongoose';
+import  {getRegister, getLogin, addConversation,seeUserId , addMessage, messageId, getAllusers} from "./routes/auth"
+import path from 'path';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import * as socketio from "socket.io";
+
  dotenv.config();
+ 
+ const  URI = process.env.MONGODB_URI;
 
-
-
-
-mongodbConnection;
+ mongoose.connect(URI!,{
+     useNewUrlParser: true,
+     useUnifiedTopology: true,
+   } as ConnectOptions, (err: Error)=>{
+        if (err){
+         console.log(err)
+         process.exit(1)
+        }
+         console.log("Connection fait avec succes chez mongodbdatabase ");
+     }) 
    
   // midlewere
-const app: Express = express();
+  const app = express();
+
+  let http = require("http").Server(app);
+
+
+
+  let io = require("socket.io")(http);
+
+
+app.use(cors())
 app.use(express.json())
-    .use(cors({origin: "http://localhost:5173", credentials: true}))
-      .use(
-    session({
-        secret: "secretcode",
-        resave: true,
-        saveUninitialized: true,
-    })
-);
+app.use(helmet());
+app.use(morgan("common"))
 
-app.use(cookieParser())
-    .use(passport.initialize())
-    .use(passport.session());
 
-//passport
-passport.use(new  LocalStrategy((username: string, password: string, done)=>{
-  User.findOne({ username: username}, (err : any, user : DatabaseUserInterface)=>{
-    if (err) throw err;
-    if (!user) return done(null,false);
-    bscrypt.compare(password, user.password, (err, result: boolean)=>{
-      if(err) throw err;
-      if(result === true){
-        return done (null, user);
-      }else {
-        return done(null, false);
-      }
-    });
+
+// console.log(process.env);
+
+app.post("/register",getRegister);
+app.post("/login", getLogin);
+app.get('/users', getAllusers)
+app.post("/conversation", addConversation );
+app.get ('/:userID', seeUserId)
+app.post('/messenger', addMessage)
+app.get('/:conversationId', messageId)
+
+
+io.on("connection", (socket: any)=>{
+  console.log("welcom in socketAnnyChat");
+  socket.on("message", (message: any)=>{
+    console.log(message);
+    
   });
-})
-);
-
-
-passport.serializeUser((user : DatabaseUserInterface, cb)=>{
-  cb(null,user._id);
+  socket.emit('connection', null);
 });
 
 
-passport.deserializeUser((id: string, cb)=>{
-  User.findOne({_id: id}, (err: any, user : DatabaseUserInterface) =>{
-    const userInformation : UserInterface = {
-     username : user.username,
-      isAdmin: user.isAdmin,
-      id: user._id
-    };
-    cb(err, userInformation);
-});
-});
 
+app.get("/images", express.static(path.join(__dirname, "./public/images")));
 
 const port = process.env.PORT
-// app.post('/register', registerController.register());
 
-
-//routes
-app.post('/register',getRegister)
-
-
-app.post("/login", passport.authenticate("local"), (req, res) => {
-  res.send("success")
-});
-
-app.get("/user", (req,res)=>{
-  res.send(req.user);
-});
-
-app.get("/logout", getLogout)
-
-app.post("/deleteuser",postDeleteUser);
-
-
-app.get("/getallusers", getAllusers);
-
-
-app.listen(4001, () => {
-    console.log(`[server]: Server is runnning at https : anny  localhost: ${port}`);
+const server = app.listen(port, () => {
+  console.log(`[server]: Server is runnning at https : anny  localhost: ${port}`);
 })

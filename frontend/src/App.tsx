@@ -1,40 +1,42 @@
-import react, { useContext } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import NavBar from "./Component/NavBar";
-import AdminPage from "./Pages/AdminPage";
-import HomePages from "./Pages/HomePages";
-import Login from "./Pages/Login";
-import Profile from "./Pages/Profile";
-import Register from "./Pages/Register"
-import { myContext } from "./Pages/Context";
-import "./app.scss"
+import Home from './Pages/home/Home';
+import Login from './Pages/login/Login';
+import Profile from "./Pages/profile/Profile";
+import Messenger from "./Pages/messenger/Messenger"
+import Register from "./Pages/register/Register";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { useContext } from "react";
+
+
+// import { AuthContext } from "./Component/context/AuthContext"
+
 function App() {
-  const ctx = useContext(myContext);
-  console.log(ctx);
-
   return (
-    <BrowserRouter>
-      <NavBar />
-
+    <Router>
       <Routes>
-        <Route path="/" element={<HomePages />} />
-        {
-          ctx ? (
-            <>
-              {<Route path="/admin" element={<AdminPage />} />}
-              <Route path="/profile" element={<Profile />} />
-            </>
-          ) : (
-            <>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </>
-          )
-        }
+        <Route path='/' element={<Home />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/messenger' element={<Messenger />} />
 
-      </Routes>
 
-    </BrowserRouter>
+
+        {/* //   <Route path="/">
+      //     {user ? <Home /> : <Register />}
+      //   </Route>
+      //   <Route path="/login">{user ? <Navigate to="/" /> : <Login />}</Route>
+      //   <Route path="/register">
+      //     {user ? <Navigate to="/" /> : <Register />}
+      //   </Route> */}
+      //   {/* <Route path="/profile/:username">
+      //     <Profile />
+      //   </Route> */}
+      // </Routes>
+    </Router>
   );
 }
 
