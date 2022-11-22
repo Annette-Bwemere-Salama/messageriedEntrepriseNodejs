@@ -8,8 +8,12 @@ export default function Profile({ user }: { user: any }) {
   return (
 
     <div className="flex flex-row items-center p-4 relative">
-      <div className="absolute text-xs text-gray-500 right-0 top-0 mr-4 mt-3">{user && user?.createdAt}</div>
+      <div className="absolute text-xs text-gray-500 right-0 top-0 mr-4 mt-3">
+        {/* {user && user?.createdAt} */}
+        5min apres
+      </div>
       <div className="flex items-center justify-center h-10 w-10 rounded-full bg-pink-500 text-pink-300 font-bold flex-shrink-0">
+        <img src="" alt="ava" />
         {/* {user.profilePicture ? user.profilePicture : PI + "persone/noAvatar.png"} */}
       </div>
       <div className="flex flex-col flex-grow ml-3">
