@@ -2,11 +2,11 @@
 import  dotenv from 'dotenv';
 import cors from 'cors'
 import mongoose , {Error, ConnectOptions} from 'mongoose';
-import  {getRegister, getLogin, addConversation,seeUserId , addMessage, messageId, getAllusers} from "./routes/auth"
+import  {getRegister, getLogin, addConversation,seeUserId , addMessage, allMessageId, getAllusers} from "./routes/auth"
 import path from 'path';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import * as socketio from "socket.io";
+// import * as socketio from "socket.io";
 
  dotenv.config();
  
@@ -45,10 +45,11 @@ app.use(morgan("common"))
 app.post("/register",getRegister);
 app.post("/login", getLogin);
 app.get('/users', getAllusers)
+app.post('/messenger', addMessage)
+app.get('/:messenger', allMessageId)
+
 app.post("/conversation", addConversation );
 app.get ('/:userID', seeUserId)
-app.post('/messenger', addMessage)
-app.get('/:conversationId', messageId)
 
 
 io.on("connection", (socket: any)=>{

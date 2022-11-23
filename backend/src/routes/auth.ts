@@ -93,7 +93,10 @@ export const seeUserId = async (req : Request, res: Response) =>{
 
 
 export const addMessage = async (req : Request, res: Response) =>{
-  const newMessage = new Message(req.body)
+  const { text, sender} = req.body
+  const newMessage = new Message({
+    text, sender
+  })
   try {
     const savedMessage = await newMessage.save();
     res.status(200).json(savedMessage)
@@ -102,7 +105,10 @@ export const addMessage = async (req : Request, res: Response) =>{
     
   }
 }
-export const messageId = async (req : Request, res: Response) =>{
+
+
+
+export const allMessageId = async (req : Request, res: Response) =>{
     try {
       const messages = await Message.find({
         conversationId: req.params.conversationId

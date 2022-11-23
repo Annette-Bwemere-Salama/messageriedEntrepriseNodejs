@@ -1,19 +1,18 @@
-import Topbar from "../../Component/topbar/Topbar";
-// import Sidebar from "../../Component/sidebar/Sidebar";
-// import Feed from "../../Component/feed/Feed";
-// import Rightbar from "../../components/rightbar/Rightbar";
+import Login from "../login/Login";
 import "./home.css"
+import logo from "/home/anette-bwemere/NodeProje/strimingmsgMONGODB/frontend/src/assets/aanyA.png"
 
 export default function Home() {
   return (
     <>
-      <Topbar />
-      <div className="homeContainer">
-        {/* <Sidebar /> */}
-        {/* <Feed username={undefined}/> */}
-        {/* <Rightbar/> */}
-        <h1>AnnyChat.comme Vous salue</h1>
+
+      <div className="text-center">
+        <header className="bg-purple-darker m-3 p-3 rounded shadow-lg">
+          <img src={logo} alt="AnyChat" className="rounded-lg" />
+        </header>
       </div>
+      <Login />
     </>
+
   );
 }
