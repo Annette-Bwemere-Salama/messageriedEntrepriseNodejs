@@ -10,12 +10,14 @@ import SearchIcon from '@mui/icons-material/Search';
 
 export default function Messenger() {
 
+
     const [users, setUsers] = useState([])
 
     useEffect(() => {
         const getUsers = async () => {
             try {
-                const res = await axios.get("http://localhost:5000/users")
+                const res = await axios.get
+                    (`${import.meta.env.VITE_REACT_APP_GOOGLE_BACKEND}/users`)
                 const data = res.data
                 setUsers(data)
                 console.log(data);
@@ -112,7 +114,9 @@ export default function Messenger() {
                     </div>
                     <div className="h-full overflow-hidden relative pt-2">
                         <div className="flex flex-col divide-y h-full overflow-y-auto -mx-4">
-                            {users ? users.map((user: any, index: number) => (<Profile user={user} key={index} />)) : (<div>Pas d'utilisateur </div>)}
+                            {users ? users.map((user: any, index: number) => (<Profile user={user} key={index} />
+                                // , <Conversation user={user} key={index} />
+                            )) : (<div>Pas d'utilisateur </div>)}
                             <Profile user={undefined} />
 
                         </div>

@@ -13,12 +13,12 @@ export default function Conversation() {
     const [texte, setTexte] = useState("");
 
     const handleSubmit = async (e: any) => {
-        e.preventDefault();
+        // e.preventDefault();
         const insertInput = {
             text: texte
         }
         try {
-            const res = await axios.post("http://localhost:5000/messenger", insertInput)
+            const res = await axios.post(`${import.meta.env.VITE_REACT_APP_GOOGLE_BACKEND}/messenger`, insertInput)
             console.log(res.data);
         } catch (error) {
             console.log(error)
@@ -31,7 +31,7 @@ export default function Conversation() {
     useEffect(() => {
         const getMessage = async () => {
             try {
-                const res = await axios.get("http://localhost:5000/:messenger")
+                const res = await axios.get(`${import.meta.env.VITE_REACT_APP_GOOGLE_BACKEND}/:messenger`)
                 const data = res.data
                 setMessages(data)
                 console.log(data);
