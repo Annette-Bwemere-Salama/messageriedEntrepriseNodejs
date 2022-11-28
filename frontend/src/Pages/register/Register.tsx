@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./register.css";
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 // import LoginPage from "./Google"
 export default function Registration() {
@@ -9,6 +12,17 @@ export default function Registration() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate()
+    const notify = () => toast(" Enregistrement en cours !", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+
+    });
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
@@ -18,7 +32,7 @@ export default function Registration() {
         try {
             const res = await axios.post("http://localhost:5000/register", infosUser)
             console.log(res.data);
-            if (res.data) await navigate("/messenger")
+            if (res.data) await navigate("/login")
 
         } catch (error) {
             console.error(error);
@@ -118,7 +132,9 @@ export default function Registration() {
                             Forget Password?
                         </a>
                         <div className="flex items-center mt-4">
-                            <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600">
+                            <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600"
+                                onClick={notify}
+                            >
                                 Register
                             </button>
                         </div>

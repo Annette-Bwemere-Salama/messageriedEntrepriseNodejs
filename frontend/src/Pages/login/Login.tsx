@@ -2,6 +2,10 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
+import openSocket from "socket.io-client"
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 export default function Login() {
 
 
@@ -10,7 +14,17 @@ export default function Login() {
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
   const navigate = useNavigate()
+  const notify = () => toast("en cours !", {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
 
+  });
 
   const handleSubmit = async (e: any) => {
 
@@ -19,9 +33,14 @@ export default function Login() {
       email, username, password,
     }
     try {
-      const res = await axios.post('http://localhost:5000/login', userInput)
+      openSocket("http://localhost:50000");
+
+      const res = await axios.post('http://localhost:50000/login', userInput)
       console.log(res.data)
-      if (res.data) return navigate("/messenger")
+      if (res.data) {
+        localStorage.setItem('user', JSON.stringify(res.data))
+        return navigate("/messenger")
+      }
     } catch (error) {
       console.log(error);
 
@@ -30,11 +49,23 @@ export default function Login() {
 
   return (
     <div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-gray-50">
         <div>
           <a href="/">
             <h3 className="text-4xl font-bold text-purple-600">
-                            AnnyChatt
+              AnnyChatt
             </h3>
           </a>
         </div>
@@ -78,7 +109,9 @@ export default function Login() {
             </div>
 
             <div className="flex items-center mt-4">
-              <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600">
+              <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600"
+                onClick={notify}>
+
                 Login AnnyChatt
               </button>
             </div>

@@ -2,11 +2,15 @@
 import  dotenv from 'dotenv';
 import cors from 'cors'
 import mongoose , {Error, ConnectOptions} from 'mongoose';
-import  {getRegister, getLogin, addConversation,seeUserId , addMessage, allMessageId, getAllusers} from "./routes/auth"
+import  {getRegister, getLogin,  addMessage, 
+  allMessageId, 
+  getAllusers} from "./routes/auth"
 import path from 'path';
 import helmet from 'helmet';
 import morgan from 'morgan';
-// import * as socketio from "socket.io";
+import cloudinary from "cloudinary"
+cloudinary.v2;
+
 
  dotenv.config();
  
@@ -20,9 +24,19 @@ import morgan from 'morgan';
          console.log(err)
          process.exit(1)
         }
+
+        // const io = require("./socket").init(server)
+        // io.on("connection", (_socket: any) =>{
+        //   console.log("client Connecter socket io");
+          
+        // })
          console.log("Connection fait avec succes chez mongodbdatabase ");
-     }) 
+        
+
+        }) 
+
    
+
   // midlewere
   const app = express();
 
@@ -38,6 +52,10 @@ app.use(express.json())
 app.use(helmet());
 app.use(morgan("common"))
 
+// cloudinary.config({
+//   secure: true
+// }) ;   
+// console.log(cloudinary.config());
 
 
 // console.log(process.env);
@@ -46,20 +64,17 @@ app.post("/register",getRegister);
 app.post("/login", getLogin);
 app.get('/users', getAllusers)
 app.post('/messenger', addMessage)
-app.get('/:messenger', allMessageId)
-
-app.post("/conversation", addConversation );
-app.get ('/:userID', seeUserId)
+app.get('/messenger', allMessageId)
 
 
-io.on("connection", (socket: any)=>{
-  console.log("welcom in socketAnnyChat");
-  socket.on("message", (message: any)=>{
-    console.log(message);
+// io.on("connection", (socket: any)=>{
+//   console.log("welcom in socketAnnyChat");
+//   socket.on("message", (message: any)=>{
+//     console.log(message);
     
-  });
-  socket.emit('connection', null);
-});
+//   });
+//   socket.emit('connection', null);
+// });
 
 
 
@@ -70,3 +85,6 @@ const port = process.env.PORT
 const server = app.listen(port, () => {
   console.log(`[server]: Server is runnning at https : anny  localhost: ${port}`);
 })
+
+
+// localhost:500/messanger?senderId=34567839405&receiverId=473849358935u8

@@ -4,9 +4,7 @@ import User  from '../models/User';
 import router from "express"
 import  {  Request, Response} from 'express';
 import Message from "../models/Message"
-import Conversation from '../models/Conversation';
-import { DatabaseUserInterface, UserInterface } from 'src/interfaces/UserInterface';
-// import { Item } from 'react-bootstrap/lib/Breadcrumb';
+
 
 
 router.Router();
@@ -63,39 +61,10 @@ export const getAllusers = async (req: Request, res: Response)=>{
   }
 }
 
-
-
-
-export const addConversation = async (req : Request, res: Response) =>{
-        const newConversation = new Conversation({
-            members: [req.body.senderID, req.body.receiverID]
-        });
-        try {
-            const savedConversation = await newConversation.save();
-            res.status(200).json(savedConversation)
-        } catch (error) {
-            res.status(500).json(error)
-        }
-       
-}     
-
-export const seeUserId = async (req : Request, res: Response) =>{
-  try {
-    const conversation = await Conversation.find({
-      members: { $in: [req.params.userID]}
-    })
-  res.status(200).json(conversation)
-  } catch (error) {
-    res.status(500).json(error)
-    
-  }
-}
-
-
 export const addMessage = async (req : Request, res: Response) =>{
-  const { text, sender} = req.body
+  const {receiverId, text, senderId} = req.body
   const newMessage = new Message({
-    text, sender
+   receiverId, text, senderId
   })
   try {
     const savedMessage = await newMessage.save();
@@ -111,16 +80,15 @@ export const addMessage = async (req : Request, res: Response) =>{
 export const allMessageId = async (req : Request, res: Response) =>{
     try {
       const messages = await Message.find({
-        conversationId: req.params.conversationId
-       });
+        $or : [
+          {receiverId:{ $in : [req.query.senderId, req.query.receiverId ]}},
+          {senderId:{ $in : [req.query.senderId, req.query.receiverId ]}}]});
        res.status(200).json(messages)
-
+       console.log(messages);
     } catch (error) {
       res.status(500).json
+      console.log(error);
     }
-  
-  
-
 }
 
 
