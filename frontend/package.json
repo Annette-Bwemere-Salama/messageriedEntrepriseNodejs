@@ -19,7 +19,9 @@
     "node-sass": "^8.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-notifications": "^1.7.4",
     "react-router-dom": "^6.4.3",
+    "react-toastify": "^9.1.1",
     "socket.io": "^4.5.3",
     "socket.io-client": "^4.5.3",
     "xxx": "^0.0.1"

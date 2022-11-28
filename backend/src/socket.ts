@@ -1,9 +1,9 @@
 let io: any;
 
 module.exports = {
-    init : httpServer =>{
+    init : (httpServer: any) =>{
         require('socket.io')(httpServer)
-        return io
+        return io;
     },
     getIo: () =>{
         if (!io) {

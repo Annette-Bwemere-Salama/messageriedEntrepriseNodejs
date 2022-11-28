@@ -8,17 +8,19 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 
 
-export default function Conversation() {
+export default function Conversation({ messages }: { messages: any }) {
     const navigate = useNavigate
     const [texte, setTexte] = useState("");
 
     const handleSubmit = async (e: any) => {
         // e.preventDefault();
         const insertInput = {
-            text: texte
+            text: texte,
+            senderId: JSON.parse(localStorage.getItem('user')!)._id,
+            receiverId: localStorage.getItem('contact')
         }
         try {
-            const res = await axios.post(`${import.meta.env.VITE_REACT_APP_GOOGLE_BACKEND}/messenger`, insertInput)
+            const res = await axios.post("http://localhost:50000/messenger", insertInput)
             console.log(res.data);
         } catch (error) {
             console.log(error)
@@ -26,25 +28,8 @@ export default function Conversation() {
     }
 
 
-    const [messages, setMessages] = useState([])
 
-    useEffect(() => {
-        const getMessage = async () => {
-            try {
-                const res = await axios.get(`${import.meta.env.VITE_REACT_APP_GOOGLE_BACKEND}/:messenger`)
-                const data = res.data
-                setMessages(data)
-                console.log(data);
-
-                // 
-            } catch (error) {
-                console.log(error);
-            }
-
-        }
-        getMessage()
-    }, [])
-
+    console.log('conversation')
 
     return (
 
@@ -91,7 +76,7 @@ export default function Conversation() {
                     <div className="grid grid-cols-12 gap-y-2">
                         <div className="col-start-6 col-end-13 p-3 rounded-lg">
                             <div className="flex items-center justify-start flex-row-reverse">
-                                <div
+                                {/* <div
                                     className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
                                 >
                                     A
@@ -102,11 +87,11 @@ export default function Conversation() {
                                     <div>
                                         Hum tu ne peux pas faire ça ma belle
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                            <div className="flex flex-row items-center">
+                            {/* <div className="flex flex-row items-center">
                                 <div
                                     className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
                                 >
@@ -118,28 +103,31 @@ export default function Conversation() {
                                     <div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
-                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                            {messages ? messages.map((message: any, _index: any) => (<div className='relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl my-3'>{message.text}</div>)) : (<div>Pas d'utilisateur </div>)}
-
-                            <div className="flex flex-row items-center">
-                                <div
-                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                >
-                                    A
+                        {messages ? messages.map((message: any, _index: any) => (
+                            <div className="col-start-1 col-end-8 p-3 rounded-lg">
+                                <div className='relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl my-3'>{message.text}
                                 </div>
-                                <div
-                                    className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                >
-                                    <div>
+
+                                <div className="flex flex-row items-center">
+                                    <div
+                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                                    >
+                                        A
+                                    </div>
+                                    <div
+                                        className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                                    >
+                                        <div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                        )) : (<div>Pas d'utilisateur </div>)}
 
-                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
+                        {/* <div className="col-start-1 col-end-8 p-3 rounded-lg">
                             <div className="flex flex-row items-center">
                                 <div
                                     className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
@@ -194,7 +182,7 @@ export default function Conversation() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
