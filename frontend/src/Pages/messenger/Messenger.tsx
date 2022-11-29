@@ -5,15 +5,15 @@ import Conversation from './Conversation'
 import HomeIcon from '@mui/icons-material/Home';
 import MessageIcon from '@mui/icons-material/Message';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
-import Darkmood from "../../darkmood/Darkmood";
+// import Darkmood from "../../darkmood/Darkmood";
 import SearchIcon from '@mui/icons-material/Search';
-import { InputLabel } from '@mui/material';
+// import { InputLabel } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { io, Socket } from "socket.io-client"
 
 export default function Messenger() {
 
     const [messages, setMessages] = useState([])
-
 
     const getMessage = async () => {
         try {
@@ -36,6 +36,20 @@ export default function Messenger() {
     const [users, setUsers] = useState([])
 
     useEffect(() => {
+
+
+        // const socket: Socket<
+        // ClientToServerEvents,
+        // serverToClientEvents,
+        // InterServerEvents,
+        // SocketData
+
+        //     > = io("/messenger");
+
+        // socket.io("bar", (arg: any) => {
+        //     console.log(arg);
+
+        // })
         console.log('messages')
         const getUsers = async () => {
             try {
