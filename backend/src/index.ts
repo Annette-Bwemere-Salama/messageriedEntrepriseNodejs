@@ -10,6 +10,9 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import cloudinary from "cloudinary"
 cloudinary.v2;
+// import { Buffer } from 'buffer';
+import { Server } from 'socket.io';
+let io : any;
 
 
  dotenv.config();
@@ -24,18 +27,17 @@ cloudinary.v2;
          console.log(err)
          process.exit(1)
         }
-
-        // const io = require("./socket").init(server)
-        // io.on("connection", (_socket: any) =>{
-        //   console.log("client Connecter socket io");
-          
-        // })
          console.log("Connection fait avec succes chez mongodbdatabase ");
         
 
         }) 
 
-   
+io = new Server<
+   ClientToServerEvents,
+   serverToClientEvents,
+   InterServerEvents,
+   SocketData
+   >();
 
   // midlewere
   const app = express();
@@ -43,8 +45,6 @@ cloudinary.v2;
   let http = require("http").Server(app);
 
 
-
-  let io = require("socket.io")(http);
 
 
 app.use(cors())
@@ -67,14 +67,22 @@ app.post('/messenger', addMessage)
 app.get('/messenger', allMessageId)
 
 
-// io.on("connection", (socket: any)=>{
-//   console.log("welcom in socketAnnyChat");
-//   socket.on("message", (message: any)=>{
-//     console.log(message);
+io.on("connection", (socket: any)=>{
+  socket.date.name = "";
+  console.log("welcom in socketAnnyChat");
+  socket.on("message", (message: any)=>{
+    console.log(message);
+  socket.emit("basicEmit", 1, "2", Buffer.from([3]));
+  socket.emit("withAck", "4", (_e: any) =>{
+
+  });
+  io.emit("noArg");
+
+  io.to("room1").emit("basicEmit", 1, "2", Buffer.from([3]));
     
-//   });
-//   socket.emit('connection', null);
-// });
+  });
+  socket.emit('connection', null);
+});
 
 
 
