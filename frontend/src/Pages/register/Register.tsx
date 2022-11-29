@@ -46,8 +46,7 @@ export default function Registration() {
                 <div>
                     <a href="/">
                         <h3 className="text-4xl font-bold text-purple-600">
-                            Welcom to
-                            AnnyChatt.com
+                        <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=timenewreman&weight=700&size=33&duration=2500&pause=1000&color=7C3AED&background=8672FF00&width=446&lines=Welcom+To+AnnyChatt" alt="Typing SVG" /></a>
                         </h3>
                     </a>
                 </div>
